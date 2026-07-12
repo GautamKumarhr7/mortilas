@@ -27,4 +27,8 @@ export class RolePermissionService {
   async deleteRolePermission(id: number): Promise<RolePermission | undefined> {
     return await this.rolePermissionRepository.delete(id);
   }
+
+  async getModulesAndSubmodulesByRoleId(roleId: number) {
+    return await this.rolePermissionRepository.findModulesAndSubmodulesByRoleId(roleId);
+  }
 }

@@ -47,4 +47,14 @@ export class RolePermissionController {
     }
     res.status(200).json({ success: true, message: 'RolePermission deleted' });
   };
+
+  getModulesAndSubmodulesByRoleId = async (req: Request, res: Response, next: NextFunction) => {
+    const roleId = parseInt(req.params.roleId as string, 10);
+    if (isNaN(roleId)) {
+      res.status(400).json({ success: false, message: 'Invalid roleId' });
+      return;
+    }
+    const modules = await this.rolePermissionService.getModulesAndSubmodulesByRoleId(roleId);
+    res.status(200).json({ success: true, data: modules });
+  };
 }
