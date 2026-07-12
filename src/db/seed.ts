@@ -1,0 +1,124 @@
+import { db, pool } from './index.js';
+import { roles, users, module, submodules, permissions, rolePermissions } from '../models/index.js';
+import bcrypt from 'bcrypt';
+import { eq, and } from 'drizzle-orm';
+
+async function seed() {
+  try {
+    console.log('Seeding admin role and user...');
+
+    // 1. Create Admin Role
+    let adminRole = await db.select().from(roles).where(eq(roles.code, 'ADMIN')).then(res => res[0]);
+    
+    if (!adminRole) {
+      const [newRole] = await db.insert(roles).values({
+        name: 'Administrator',
+        code: 'ADMIN',
+      }).returning();
+      adminRole = newRole;
+      console.log('Admin role created.');
+    } else {
+      console.log('Admin role already exists.');
+    }
+
+    // 2. Create Admin User
+    const adminEmail = "admin@gmail.com";
+    let adminUser = await db.select().from(users).where(eq(users.email, adminEmail)).then(res => res[0]);
+
+    if (!adminUser) {
+      const hashedPassword = await bcrypt.hash('Admin@123', 10);
+      const [newUser] = await db.insert(users).values({
+        name: 'Admin User',
+        email: adminEmail,
+        password: hashedPassword,
+        roleId: adminRole.id,
+      }).returning();
+      adminUser = newUser;
+      console.log('Admin user created.');
+    } else {
+      console.log('Admin user already exists.');
+    }
+    console.log(`Email: ${adminEmail} | Password: Admin@123`);
+
+    // 3. Create Admin Module
+    let adminModule = await db.select().from(module).where(eq(module.code, 'ADMINISTRATION')).then(res => res[0]);
+    if (!adminModule) {
+      const [newModule] = await db.insert(module).values({
+        name: 'Administration',
+        code: 'ADMINISTRATION'
+      }).returning();
+      adminModule = newModule;
+      console.log('Admin module created.');
+    }
+
+    // 4. Create SubModules
+    const subMods = [
+      { name: 'Users', code: 'USER' },
+      { name: 'Roles', code: 'ROLE' },
+      { name: 'Modules', code: 'MODULE' },
+      { name: 'SubModules', code: 'SUBMODULE' },
+      { name: 'Permissions', code: 'PERMISSION' },
+      { name: 'Role Permissions', code: 'ROLE_PERMISSION' }
+    ];
+    
+    const createdSubMods = [];
+    for (const sm of subMods) {
+      let subM = await db.select().from(submodules).where(eq(submodules.code, sm.code)).then(res => res[0]);
+      if (!subM) {
+        const [newSm] = await db.insert(submodules).values({ ...sm, moduleId: adminModule.id }).returning();
+        subM = newSm;
+      }
+      createdSubMods.push(subM);
+    }
+    console.log('Submodules seeded.');
+
+    // 5. Create Permissions
+    const perms = [
+      { name: 'Create', code: 'CREATE' },
+      { name: 'Read', code: 'READ' },
+      { name: 'Update', code: 'UPDATE' },
+      { name: 'Delete', code: 'DELETE' }
+    ];
+
+    const createdPerms = [];
+    for (const p of perms) {
+      let perm = await db.select().from(permissions).where(eq(permissions.code, p.code)).then(res => res[0]);
+      if (!perm) {
+        const [newPerm] = await db.insert(permissions).values(p).returning();
+        perm = newPerm;
+      }
+      createdPerms.push(perm);
+    }
+    console.log('Permissions seeded.');
+
+    // 6. Assign Role Permissions
+    for (const subM of createdSubMods) {
+      for (const perm of createdPerms) {
+        const existingRp = await db.select().from(rolePermissions).where(
+          and(
+            eq(rolePermissions.roleId, adminRole.id),
+            eq(rolePermissions.subModuleId, subM.id),
+            eq(rolePermissions.permissionId, perm.id)
+          )
+        ).then(res => res[0]);
+
+        if (!existingRp) {
+          await db.insert(rolePermissions).values({
+            roleId: adminRole.id,
+            subModuleId: subM.id,
+            permissionId: perm.id
+          });
+        }
+      }
+    }
+    console.log('Role permissions assigned to Admin role.');
+
+    console.log('Seeding completed successfully!');
+  } catch (error) {
+    console.error('Error seeding database:', error);
+  } finally {
+    await pool.end();
+  }
+}
+
+seed();

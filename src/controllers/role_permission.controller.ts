@@ -1,0 +1,50 @@
+import { Request, Response, NextFunction } from 'express';
+import { RolePermissionService } from '../services/role_permission.service.js';
+
+export class RolePermissionController {
+  private rolePermissionService: RolePermissionService;
+
+  constructor() {
+    this.rolePermissionService = new RolePermissionService();
+  }
+
+  getAllRolePermissions = async (req: Request, res: Response, next: NextFunction) => {
+    const rolePermissions = await this.rolePermissionService.getAllRolePermissions();
+    res.status(200).json({ success: true, data: rolePermissions });
+  };
+
+  getRolePermissionById = async (req: Request, res: Response, next: NextFunction) => {
+    const id = parseInt(req.params.id as string, 10);
+    const rolePermission = await this.rolePermissionService.getRolePermissionById(id);
+    if (!rolePermission) {
+      res.status(404).json({ success: false, message: 'RolePermission not found' });
+      return;
+    }
+    res.status(200).json({ success: true, data: rolePermission });
+  };
+
+  createRolePermission = async (req: Request, res: Response, next: NextFunction) => {
+    const rolePermission = await this.rolePermissionService.createRolePermission(req.body);
+    res.status(201).json({ success: true, data: rolePermission });
+  };
+
+  updateRolePermission = async (req: Request, res: Response, next: NextFunction) => {
+    const id = parseInt(req.params.id as string, 10);
+    const rolePermission = await this.rolePermissionService.updateRolePermission(id, req.body);
+    if (!rolePermission) {
+      res.status(404).json({ success: false, message: 'RolePermission not found' });
+      return;
+    }
+    res.status(200).json({ success: true, data: rolePermission });
+  };
+
+  deleteRolePermission = async (req: Request, res: Response, next: NextFunction) => {
+    const id = parseInt(req.params.id as string, 10);
+    const rolePermission = await this.rolePermissionService.deleteRolePermission(id);
+    if (!rolePermission) {
+      res.status(404).json({ success: false, message: 'RolePermission not found' });
+      return;
+    }
+    res.status(200).json({ success: true, message: 'RolePermission deleted' });
+  };
+}
