@@ -40,25 +40,23 @@ async function seed() {
     }
     console.log(`Email: ${adminEmail} | Password: Admin@123`);
 
-    // 3. Create Admin Module
-    let adminModule = await db.select().from(module).where(eq(module.code, 'ADMINISTRATION')).then(res => res[0]);
+    // 3. Create Authority Module
+    let adminModule = await db.select().from(module).where(eq(module.code, 'AUTHORITY')).then(res => res[0]);
     if (!adminModule) {
       const [newModule] = await db.insert(module).values({
-        name: 'Administration',
-        code: 'ADMINISTRATION'
+        name: 'Authority',
+        code: 'AUTHORITY'
       }).returning();
       adminModule = newModule;
-      console.log('Admin module created.');
+      console.log('Authority module created.');
     }
 
     // 4. Create SubModules
     const subMods = [
-      { name: 'Users', code: 'USER' },
-      { name: 'Roles', code: 'ROLE' },
-      { name: 'Modules', code: 'MODULE' },
-      { name: 'SubModules', code: 'SUBMODULE' },
-      { name: 'Permissions', code: 'PERMISSION' },
-      { name: 'Role Permissions', code: 'ROLE_PERMISSION' }
+      { name: 'Role', code: 'ROLE' },
+      { name: 'Permission', code: 'PERMISSION' },
+      { name: 'Submodule', code: 'SUBMODULE' },
+      { name: 'Role Permission', code: 'ROLE_PERMISSION' }
     ];
     
     const createdSubMods = [];
@@ -97,6 +95,7 @@ async function seed() {
         const existingRp = await db.select().from(rolePermissions).where(
           and(
             eq(rolePermissions.roleId, adminRole.id),
+            eq(rolePermissions.moduleId, adminModule.id),
             eq(rolePermissions.subModuleId, subM.id),
             eq(rolePermissions.permissionId, perm.id)
           )
@@ -105,6 +104,7 @@ async function seed() {
         if (!existingRp) {
           await db.insert(rolePermissions).values({
             roleId: adminRole.id,
+            moduleId: adminModule.id,
             subModuleId: subM.id,
             permissionId: perm.id
           });

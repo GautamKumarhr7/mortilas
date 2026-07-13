@@ -15,6 +15,13 @@
       "when": 1783855149983,
       "tag": "0001_nasty_dracula",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1783976824671,
+      "tag": "0002_strange_thaddeus_ross",
+      "breakpoints": true
     }
   ]
 }

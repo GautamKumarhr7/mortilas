@@ -17,14 +17,21 @@ export class RolePermissionRepository {
     return result[0];
   }
 
-  async update(id: number, data: Partial<NewRolePermission>): Promise<RolePermission | undefined> {
-    const result = await db.update(rolePermissions).set({ ...data, updatedAt: new Date() }).where(eq(rolePermissions.id, id)).returning();
-    return result[0];
+  async createMultiple(data: NewRolePermission[]): Promise<RolePermission[]> {
+    const result = await db.insert(rolePermissions).values(data).returning();
+    return result;
   }
 
-  async delete(id: number): Promise<RolePermission | undefined> {
-    const result = await db.delete(rolePermissions).where(eq(rolePermissions.id, id)).returning();
-    return result[0];
+  async updateByRoleId(roleId: number, data: NewRolePermission[]): Promise<RolePermission[]> {
+    await db.delete(rolePermissions).where(eq(rolePermissions.roleId, roleId));
+    if (data && data.length > 0) {
+      return await db.insert(rolePermissions).values(data).returning();
+    }
+    return [];
+  }
+
+  async deleteByRoleId(roleId: number): Promise<void> {
+    await db.delete(rolePermissions).where(eq(rolePermissions.roleId, roleId));
   }
 
   async findModulesAndSubmodulesByRoleId(roleId: number) {

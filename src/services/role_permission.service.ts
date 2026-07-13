@@ -20,12 +20,16 @@ export class RolePermissionService {
     return await this.rolePermissionRepository.create(data);
   }
 
-  async updateRolePermission(id: number, data: Partial<NewRolePermission>): Promise<RolePermission | undefined> {
-    return await this.rolePermissionRepository.update(id, data);
+  async createMultipleRolePermissions(data: NewRolePermission[]): Promise<RolePermission[]> {
+    return await this.rolePermissionRepository.createMultiple(data);
   }
 
-  async deleteRolePermission(id: number): Promise<RolePermission | undefined> {
-    return await this.rolePermissionRepository.delete(id);
+  async updateRolePermissionsByRoleId(roleId: number, data: NewRolePermission[]): Promise<RolePermission[]> {
+    return await this.rolePermissionRepository.updateByRoleId(roleId, data);
+  }
+
+  async deleteRolePermissionsByRoleId(roleId: number): Promise<void> {
+    return await this.rolePermissionRepository.deleteByRoleId(roleId);
   }
 
   async getModulesAndSubmodulesByRoleId(roleId: number) {

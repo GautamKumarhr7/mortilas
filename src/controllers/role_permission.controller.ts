@@ -24,28 +24,25 @@ export class RolePermissionController {
   };
 
   createRolePermission = async (req: Request, res: Response, next: NextFunction) => {
-    const rolePermission = await this.rolePermissionService.createRolePermission(req.body);
-    res.status(201).json({ success: true, data: rolePermission });
+    if (Array.isArray(req.body)) {
+      const rolePermissions = await this.rolePermissionService.createMultipleRolePermissions(req.body);
+      res.status(201).json({ success: true, data: rolePermissions });
+    } else {
+      const rolePermission = await this.rolePermissionService.createRolePermission(req.body);
+      res.status(201).json({ success: true, data: rolePermission });
+    }
   };
 
   updateRolePermission = async (req: Request, res: Response, next: NextFunction) => {
-    const id = parseInt(req.params.id as string, 10);
-    const rolePermission = await this.rolePermissionService.updateRolePermission(id, req.body);
-    if (!rolePermission) {
-      res.status(404).json({ success: false, message: 'RolePermission not found' });
-      return;
-    }
-    res.status(200).json({ success: true, data: rolePermission });
+    const roleId = parseInt(req.params.roleId as string, 10);
+    const rolePermissions = await this.rolePermissionService.updateRolePermissionsByRoleId(roleId, req.body);
+    res.status(200).json({ success: true, data: rolePermissions });
   };
 
   deleteRolePermission = async (req: Request, res: Response, next: NextFunction) => {
-    const id = parseInt(req.params.id as string, 10);
-    const rolePermission = await this.rolePermissionService.deleteRolePermission(id);
-    if (!rolePermission) {
-      res.status(404).json({ success: false, message: 'RolePermission not found' });
-      return;
-    }
-    res.status(200).json({ success: true, message: 'RolePermission deleted' });
+    const roleId = parseInt(req.params.roleId as string, 10);
+    await this.rolePermissionService.deleteRolePermissionsByRoleId(roleId);
+    res.status(200).json({ success: true, message: 'RolePermissions deleted' });
   };
 
   getModulesAndSubmodulesByRoleId = async (req: Request, res: Response, next: NextFunction) => {

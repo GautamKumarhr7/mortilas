@@ -1,0 +1,2 @@
+ALTER TABLE "role_permissions" ADD COLUMN "module_id" integer NOT NULL;--> statement-breakpoint
+ALTER TABLE "role_permissions" ADD CONSTRAINT "role_permissions_module_id_modules_id_fk" FOREIGN KEY ("module_id") REFERENCES "public"."modules"("id") ON DELETE cascade ON UPDATE no action;
