@@ -22,6 +22,13 @@
       "when": 1783976824671,
       "tag": "0002_strange_thaddeus_ross",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1784123232694,
+      "tag": "0003_gigantic_moira_mactaggert",
+      "breakpoints": true
     }
   ]
 }

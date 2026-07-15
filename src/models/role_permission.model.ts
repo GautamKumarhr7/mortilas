@@ -7,7 +7,6 @@ import { module } from "./module.model.js";
 export const rolePermissions = pgTable('role_permissions', {
     id: serial('id').primaryKey(),
     roleId: integer('role_id').notNull().references(() => roles.id, { onDelete: 'cascade' }),
-    moduleId: integer('module_id').notNull().references(() => module.id, { onDelete: 'cascade' }),
     subModuleId: integer('sub_module_id').notNull().references(() => submodules.id, { onDelete: 'cascade' }),
     permissionId: integer('permission_id').notNull().references(() => permissions.id, { onDelete: 'cascade' }),
     

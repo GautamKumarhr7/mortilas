@@ -12,6 +12,7 @@ async function seed() {
     
     if (!adminRole) {
       const [newRole] = await db.insert(roles).values({
+        id: 4,
         name: 'Administrator',
         code: 'ADMIN',
       }).returning();
@@ -59,14 +60,11 @@ async function seed() {
       { name: 'Role Permission', code: 'ROLE_PERMISSION' }
     ];
     
-    const createdSubMods = [];
     for (const sm of subMods) {
       let subM = await db.select().from(submodules).where(eq(submodules.code, sm.code)).then(res => res[0]);
       if (!subM) {
-        const [newSm] = await db.insert(submodules).values({ ...sm, moduleId: adminModule.id }).returning();
-        subM = newSm;
+        await db.insert(submodules).values({ ...sm, moduleId: adminModule.id });
       }
-      createdSubMods.push(subM);
     }
     console.log('Submodules seeded.');
 
@@ -78,24 +76,24 @@ async function seed() {
       { name: 'Delete', code: 'DELETE' }
     ];
 
-    const createdPerms = [];
     for (const p of perms) {
       let perm = await db.select().from(permissions).where(eq(permissions.code, p.code)).then(res => res[0]);
       if (!perm) {
-        const [newPerm] = await db.insert(permissions).values(p).returning();
-        perm = newPerm;
+        await db.insert(permissions).values(p);
       }
-      createdPerms.push(perm);
     }
     console.log('Permissions seeded.');
 
     // 6. Assign Role Permissions
-    for (const subM of createdSubMods) {
-      for (const perm of createdPerms) {
+    // Fetch ALL existing submodules and permissions
+    const allExistingSubMods = await db.select().from(submodules);
+    const allExistingPerms = await db.select().from(permissions);
+
+    for (const subM of allExistingSubMods) {
+      for (const perm of allExistingPerms) {
         const existingRp = await db.select().from(rolePermissions).where(
           and(
             eq(rolePermissions.roleId, adminRole.id),
-            eq(rolePermissions.moduleId, adminModule.id),
             eq(rolePermissions.subModuleId, subM.id),
             eq(rolePermissions.permissionId, perm.id)
           )
@@ -104,14 +102,13 @@ async function seed() {
         if (!existingRp) {
           await db.insert(rolePermissions).values({
             roleId: adminRole.id,
-            moduleId: adminModule.id,
             subModuleId: subM.id,
             permissionId: perm.id
           });
         }
       }
     }
-    console.log('Role permissions assigned to Admin role.');
+    console.log('Role permissions assigned to Admin role for all existing submodules and permissions.');
 
     console.log('Seeding completed successfully!');
   } catch (error) {
