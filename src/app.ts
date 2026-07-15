@@ -1,10 +1,17 @@
 import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
 import { apiRouter } from './routers/index.js';
 import { errorHandler } from './middlewares/error.middleware.js';
 import { pool } from './db/index.js';
 
 const app = express();
 
+app.use(helmet());
+app.use(cors({
+  origin: true,
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
