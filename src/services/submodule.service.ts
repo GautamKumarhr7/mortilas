@@ -1,5 +1,5 @@
-import { SubModuleRepository } from '../repositories/submodule.repository.js';
-import { SubModule, NewSubModule } from '../models/index.js';
+import { SubModuleRepository } from "../repositories/submodule.repository.js";
+import { SubModule, NewSubModule } from "../models/index.js";
 
 export class SubModuleService {
   private submoduleRepository: SubModuleRepository;
@@ -16,11 +16,18 @@ export class SubModuleService {
     return await this.submoduleRepository.findById(id);
   }
 
+  async getSubModulesByModuleId(moduleId: number): Promise<SubModule[]> {
+    return await this.submoduleRepository.findByModuleId(moduleId);
+  }
+
   async createSubModule(data: NewSubModule): Promise<SubModule> {
     return await this.submoduleRepository.create(data);
   }
 
-  async updateSubModule(id: number, data: Partial<NewSubModule>): Promise<SubModule | undefined> {
+  async updateSubModule(
+    id: number,
+    data: Partial<NewSubModule>,
+  ): Promise<SubModule | undefined> {
     return await this.submoduleRepository.update(id, data);
   }
 
