@@ -36,16 +36,16 @@ export class SubModuleController {
   //   const submodules = await this.submoduleService.getSubModulesByModuleId(moduleId);
   //   res.status(200).json({ success: true, data: submodules });
   // };
-  async getSubModulesByModuleId(
+  getSubModulesByModuleId = async (
     req: Request,
     res: Response,
     next: NextFunction,
-  ) {
+  ) => {
     const moduleId = parseInt(req.params.moduleId as string, 10);
     const submodules =
       await this.submoduleService.getSubModulesByModuleId(moduleId);
     res.status(200).json({ success: true, data: submodules });
-  }
+  };
 
   createSubModule = async (req: Request, res: Response, next: NextFunction) => {
     const submodule = await this.submoduleService.createSubModule(req.body);
