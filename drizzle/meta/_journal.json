@@ -29,6 +29,48 @@
       "when": 1784123232694,
       "tag": "0003_gigantic_moira_mactaggert",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1784250000000,
+      "tag": "0004_client_crud",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1784250000001,
+      "tag": "0005_project_crud",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1784250000002,
+      "tag": "0006_work_order_crud",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1784250000003,
+      "tag": "0007_material_indent_items",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1784250000004,
+      "tag": "0008_inventory_crud",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1784250000005,
+      "tag": "0009_vendor_and_subcontractor_crud",
+      "breakpoints": true
     }
   ]
 }
