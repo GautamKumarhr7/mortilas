@@ -5,9 +5,7 @@ export const normalizeSequentialCode = (
 ): string => {
   const normalizedCode = code.toUpperCase();
   if (!pattern.test(normalizedCode)) {
-    throw new Error(
-      `Code format is invalid. Expected format: ${expectedFormat}`,
-    );
+    throw new Error(`Code format is invalid. Expected format: ${expectedFormat}`);
   }
 
   return normalizedCode;
@@ -28,5 +26,5 @@ export const generateSequentialCode = (
     }
   }
 
-  return `${prefix}${String(maxSequence + 1).padStart(digits, "0")}`;
+  return `${prefix}${String(maxSequence + 1).padStart(digits, '0')}`;
 };

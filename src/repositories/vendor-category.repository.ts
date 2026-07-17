@@ -1,10 +1,10 @@
-import { eq } from "drizzle-orm";
-import { db } from "../db/index.js";
+import { eq } from 'drizzle-orm';
+import { db } from '../db/index.js';
 import {
   vendorCategories,
   VendorCategory,
   NewVendorCategory,
-} from "../models/vendor-category.model.js";
+} from '../models/vendor-category.model.js';
 
 export class VendorCategoryRepository {
   async findAll(): Promise<VendorCategory[]> {
@@ -12,10 +12,7 @@ export class VendorCategoryRepository {
   }
 
   async findById(id: number): Promise<VendorCategory | undefined> {
-    const result = await db
-      .select()
-      .from(vendorCategories)
-      .where(eq(vendorCategories.id, id));
+    const result = await db.select().from(vendorCategories).where(eq(vendorCategories.id, id));
     return result[0];
   }
 
@@ -24,10 +21,7 @@ export class VendorCategoryRepository {
     return result[0];
   }
 
-  async update(
-    id: number,
-    data: Partial<NewVendorCategory>,
-  ): Promise<VendorCategory | undefined> {
+  async update(id: number, data: Partial<NewVendorCategory>): Promise<VendorCategory | undefined> {
     const result = await db
       .update(vendorCategories)
       .set({ ...data, updatedAt: new Date() })
@@ -37,10 +31,7 @@ export class VendorCategoryRepository {
   }
 
   async delete(id: number): Promise<VendorCategory | undefined> {
-    const result = await db
-      .delete(vendorCategories)
-      .where(eq(vendorCategories.id, id))
-      .returning();
+    const result = await db.delete(vendorCategories).where(eq(vendorCategories.id, id)).returning();
     return result[0];
   }
 }

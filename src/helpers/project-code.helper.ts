@@ -1,24 +1,21 @@
-const COMPANY_CODE = "MECPL";
+const COMPANY_CODE = 'MECPL';
 
 const CATEGORY_CODE_MAP: Record<string, string> = {
-  Civil: "CIV",
-  Electrical: "ELEC",
-  HVAC: "HVAC",
-  Solar: "SOLR",
-  Interior: "INT",
-  Security: "SEC",
-  Composite: "COMP",
+  Civil: 'CIV',
+  Electrical: 'ELEC',
+  HVAC: 'HVAC',
+  Solar: 'SOLR',
+  Interior: 'INT',
+  Security: 'SEC',
+  Composite: 'COMP',
 };
 
-const PROJECT_CODE_PATTERN =
-  /^MECPL-(CIV|ELEC|HVAC|SOLR|INT|SEC|COMP)-\d{4}-\d{3}$/;
+const PROJECT_CODE_PATTERN = /^MECPL-(CIV|ELEC|HVAC|SOLR|INT|SEC|COMP)-\d{4}-\d{3}$/;
 
 export const normalizeProjectCode = (projectCode: string): string => {
   const normalizedProjectCode = projectCode.toUpperCase();
   if (!PROJECT_CODE_PATTERN.test(normalizedProjectCode)) {
-    throw new Error(
-      "Project code format is invalid. Expected format: MECPL-ELEC-2025-001",
-    );
+    throw new Error('Project code format is invalid. Expected format: MECPL-ELEC-2025-001');
   }
 
   return normalizedProjectCode;
@@ -27,16 +24,13 @@ export const normalizeProjectCode = (projectCode: string): string => {
 export const getProjectCategoryCode = (category: string): string => {
   const categoryCode = CATEGORY_CODE_MAP[category];
   if (!categoryCode) {
-    throw new Error("Project category is invalid");
+    throw new Error('Project category is invalid');
   }
 
   return categoryCode;
 };
 
-export const buildProjectCodePrefix = (
-  category: string,
-  year: number,
-): string => {
+export const buildProjectCodePrefix = (category: string, year: number): string => {
   return `${COMPANY_CODE}-${getProjectCategoryCode(category)}-${year}-`;
 };
 
@@ -56,5 +50,5 @@ export const generateProjectCode = (
     }
   }
 
-  return `${prefix}${String(maxSequence + 1).padStart(3, "0")}`;
+  return `${prefix}${String(maxSequence + 1).padStart(3, '0')}`;
 };

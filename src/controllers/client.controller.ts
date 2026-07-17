@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { ClientService } from "../services/client.service.js";
+import { Request, Response, NextFunction } from 'express';
+import { ClientService } from '../services/client.service.js';
 
 export class ClientController {
   private clientService: ClientService;
@@ -17,7 +17,7 @@ export class ClientController {
     const id = parseInt(req.params.id as string, 10);
     const client = await this.clientService.getClientById(id);
     if (!client) {
-      res.status(404).json({ success: false, message: "Client not found" });
+      res.status(404).json({ success: false, message: 'Client not found' });
       return;
     }
     res.status(200).json({ success: true, data: client });
@@ -32,7 +32,7 @@ export class ClientController {
     const id = parseInt(req.params.id as string, 10);
     const client = await this.clientService.updateClient(id, req.body);
     if (!client) {
-      res.status(404).json({ success: false, message: "Client not found" });
+      res.status(404).json({ success: false, message: 'Client not found' });
       return;
     }
     res.status(200).json({ success: true, data: client });
@@ -42,9 +42,9 @@ export class ClientController {
     const id = parseInt(req.params.id as string, 10);
     const client = await this.clientService.deleteClient(id);
     if (!client) {
-      res.status(404).json({ success: false, message: "Client not found" });
+      res.status(404).json({ success: false, message: 'Client not found' });
       return;
     }
-    res.status(200).json({ success: true, message: "Client deleted" });
+    res.status(200).json({ success: true, message: 'Client deleted' });
   };
 }

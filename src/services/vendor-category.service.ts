@@ -1,8 +1,5 @@
-import { VendorCategoryRepository } from "../repositories/vendor-category.repository.js";
-import {
-  VendorCategory,
-  NewVendorCategory,
-} from "../models/vendor-category.model.js";
+import { VendorCategoryRepository } from '../repositories/vendor-category.repository.js';
+import { VendorCategory, NewVendorCategory } from '../models/vendor-category.model.js';
 
 export class VendorCategoryService {
   private vendorCategoryRepository: VendorCategoryRepository;

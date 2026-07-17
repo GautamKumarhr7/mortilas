@@ -18,7 +18,11 @@ export class RoleRepository {
   }
 
   async update(id: number, data: Partial<NewRole>): Promise<Role | undefined> {
-    const result = await db.update(roles).set({ ...data, updatedAt: new Date() }).where(eq(roles.id, id)).returning();
+    const result = await db
+      .update(roles)
+      .set({ ...data, updatedAt: new Date() })
+      .where(eq(roles.id, id))
+      .returning();
     return result[0];
   }
 

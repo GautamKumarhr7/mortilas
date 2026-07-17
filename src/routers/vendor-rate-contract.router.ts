@@ -1,40 +1,40 @@
-import { Router } from "express";
-import { VendorRateContractController } from "../controllers/vendor-rate-contract.controller.js";
-import { asyncWrapper } from "../utils/asyncWrapper.js";
-import { authenticate } from "../middlewares/auth.middleware.js";
-import { authorize } from "../middlewares/permission.middleware.js";
+import { Router } from 'express';
+import { VendorRateContractController } from '../controllers/vendor-rate-contract.controller.js';
+import { asyncWrapper } from '../utils/asyncWrapper.js';
+import { authenticate } from '../middlewares/auth.middleware.js';
+import { authorize } from '../middlewares/permission.middleware.js';
 
 const router = Router();
 const vendorRateContractController = new VendorRateContractController();
 
 router.get(
-  "/",
+  '/',
   authenticate,
-  authorize("VENDOR_RATE_CONTRACT", "READ"),
+  authorize('VENDOR_RATE_CONTRACT', 'READ'),
   asyncWrapper(vendorRateContractController.getAllVendorRateContracts),
 );
 router.get(
-  "/:id",
+  '/:id',
   authenticate,
-  authorize("VENDOR_RATE_CONTRACT", "READ"),
+  authorize('VENDOR_RATE_CONTRACT', 'READ'),
   asyncWrapper(vendorRateContractController.getVendorRateContractById),
 );
 router.post(
-  "/",
+  '/',
   authenticate,
-  authorize("VENDOR_RATE_CONTRACT", "CREATE"),
+  authorize('VENDOR_RATE_CONTRACT', 'CREATE'),
   asyncWrapper(vendorRateContractController.createVendorRateContract),
 );
 router.put(
-  "/:id",
+  '/:id',
   authenticate,
-  authorize("VENDOR_RATE_CONTRACT", "UPDATE"),
+  authorize('VENDOR_RATE_CONTRACT', 'UPDATE'),
   asyncWrapper(vendorRateContractController.updateVendorRateContract),
 );
 router.delete(
-  "/:id",
+  '/:id',
   authenticate,
-  authorize("VENDOR_RATE_CONTRACT", "DELETE"),
+  authorize('VENDOR_RATE_CONTRACT', 'DELETE'),
   asyncWrapper(vendorRateContractController.deleteVendorRateContract),
 );
 

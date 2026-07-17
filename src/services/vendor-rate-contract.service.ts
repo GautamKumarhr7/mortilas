@@ -1,8 +1,5 @@
-import { VendorRateContractRepository } from "../repositories/vendor-rate-contract.repository.js";
-import {
-  VendorRateContract,
-  NewVendorRateContract,
-} from "../models/vendor-rate-contract.model.js";
+import { VendorRateContractRepository } from '../repositories/vendor-rate-contract.repository.js';
+import { VendorRateContract, NewVendorRateContract } from '../models/vendor-rate-contract.model.js';
 
 export class VendorRateContractService {
   private vendorRateContractRepository: VendorRateContractRepository;
@@ -15,15 +12,11 @@ export class VendorRateContractService {
     return await this.vendorRateContractRepository.findAll();
   }
 
-  async getVendorRateContractById(
-    id: number,
-  ): Promise<VendorRateContract | undefined> {
+  async getVendorRateContractById(id: number): Promise<VendorRateContract | undefined> {
     return await this.vendorRateContractRepository.findById(id);
   }
 
-  async createVendorRateContract(
-    data: NewVendorRateContract,
-  ): Promise<VendorRateContract> {
+  async createVendorRateContract(data: NewVendorRateContract): Promise<VendorRateContract> {
     return await this.vendorRateContractRepository.create(data);
   }
 
@@ -34,9 +27,7 @@ export class VendorRateContractService {
     return await this.vendorRateContractRepository.update(id, data);
   }
 
-  async deleteVendorRateContract(
-    id: number,
-  ): Promise<VendorRateContract | undefined> {
+  async deleteVendorRateContract(id: number): Promise<VendorRateContract | undefined> {
     return await this.vendorRateContractRepository.delete(id);
   }
 }

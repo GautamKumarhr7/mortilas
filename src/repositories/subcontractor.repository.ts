@@ -1,11 +1,7 @@
-import { eq, like } from "drizzle-orm";
-import { randomUUID } from "node:crypto";
-import { db } from "../db/index.js";
-import {
-  subcontractors,
-  Subcontractor,
-  NewSubcontractor,
-} from "../models/subcontractor.model.js";
+import { eq, like } from 'drizzle-orm';
+import { randomUUID } from 'node:crypto';
+import { db } from '../db/index.js';
+import { subcontractors, Subcontractor, NewSubcontractor } from '../models/operation/subcontractor.model.js';
 
 export class SubcontractorRepository {
   async findAll(): Promise<Subcontractor[]> {
@@ -13,16 +9,11 @@ export class SubcontractorRepository {
   }
 
   async findById(id: string): Promise<Subcontractor | undefined> {
-    const result = await db
-      .select()
-      .from(subcontractors)
-      .where(eq(subcontractors.id, id));
+    const result = await db.select().from(subcontractors).where(eq(subcontractors.id, id));
     return result[0];
   }
 
-  async findBySubcontractorCode(
-    subcontractorCode: string,
-  ): Promise<Subcontractor | undefined> {
+  async findBySubcontractorCode(subcontractorCode: string): Promise<Subcontractor | undefined> {
     const result = await db
       .select()
       .from(subcontractors)
@@ -59,10 +50,7 @@ export class SubcontractorRepository {
   }
 
   async delete(id: string): Promise<Subcontractor | undefined> {
-    const result = await db
-      .delete(subcontractors)
-      .where(eq(subcontractors.id, id))
-      .returning();
+    const result = await db.delete(subcontractors).where(eq(subcontractors.id, id)).returning();
     return result[0];
   }
 }

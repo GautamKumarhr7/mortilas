@@ -1,10 +1,6 @@
-import { eq, like } from "drizzle-orm";
-import { db } from "../db/index.js";
-import {
-  workOrders,
-  WorkOrder,
-  NewWorkOrder,
-} from "../models/work-order.model.js";
+import { eq, like } from 'drizzle-orm';
+import { db } from '../db/index.js';
+import { workOrders, WorkOrder, NewWorkOrder } from '../models/projectMaster/work-order.model.js';
 
 export class WorkOrderRepository {
   async findAll(): Promise<WorkOrder[]> {
@@ -12,10 +8,7 @@ export class WorkOrderRepository {
   }
 
   async findById(id: number): Promise<WorkOrder | undefined> {
-    const result = await db
-      .select()
-      .from(workOrders)
-      .where(eq(workOrders.id, id));
+    const result = await db.select().from(workOrders).where(eq(workOrders.id, id));
     return result[0];
   }
 
@@ -41,10 +34,7 @@ export class WorkOrderRepository {
     return result[0];
   }
 
-  async update(
-    id: number,
-    workOrder: Partial<NewWorkOrder>,
-  ): Promise<WorkOrder | undefined> {
+  async update(id: number, workOrder: Partial<NewWorkOrder>): Promise<WorkOrder | undefined> {
     const result = await db
       .update(workOrders)
       .set({ ...workOrder, updatedAt: new Date() })
@@ -54,10 +44,7 @@ export class WorkOrderRepository {
   }
 
   async delete(id: number): Promise<WorkOrder | undefined> {
-    const result = await db
-      .delete(workOrders)
-      .where(eq(workOrders.id, id))
-      .returning();
+    const result = await db.delete(workOrders).where(eq(workOrders.id, id)).returning();
     return result[0];
   }
 }

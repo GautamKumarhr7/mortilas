@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { db } from '../db/index.js';
-import { rolePermissions } from '../models/role_permission.model.js';
-import { permissions } from '../models/permission.model.js';
-import { submodules } from '../models/submodule.model.js';
+import { rolePermissions } from '../models/authority/role_permission.model.js';
+import { permissions } from '../models/authority/permission.model.js';
+import { submodules } from '../models/authority/submodule.model.js';
 import { and, eq } from 'drizzle-orm';
 
 export const authorize = (submoduleCode: string, permissionCode: string) => {
@@ -12,26 +12,28 @@ export const authorize = (submoduleCode: string, permissionCode: string) => {
       return;
     }
 
-    if (!req.user.roleId) {
+    if (!req.user.roleId && !req.user.designationId) {
       res.status(403).json({ success: false, message: 'Forbidden: User has no assigned role' });
       return;
     }
-
+    const roleId = req.user.roleId || req.user.designationId;
+    console.log(roleId);
     try {
-      const result = await db.select({
-        id: rolePermissions.id
-      })
-      .from(rolePermissions)
-      .innerJoin(permissions, eq(rolePermissions.permissionId, permissions.id))
-      .innerJoin(submodules, eq(rolePermissions.subModuleId, submodules.id))
-      .where(
-        and(
-          eq(rolePermissions.roleId, req.user.roleId),
-          eq(submodules.code, submoduleCode),
-          eq(permissions.code, permissionCode)
-        )
-      );
-
+      const result = await db
+        .select({
+          id: rolePermissions.id,
+        })
+        .from(rolePermissions)
+        .innerJoin(permissions, eq(rolePermissions.permissionId, permissions.id))
+        .innerJoin(submodules, eq(rolePermissions.subModuleId, submodules.id))
+        .where(
+          and(
+            eq(rolePermissions.roleId, roleId),
+            eq(submodules.code, submoduleCode),
+            eq(permissions.code, permissionCode),
+          ),
+        );
+      console.log(result);
       if (result.length === 0) {
         res.status(403).json({ success: false, message: 'Forbidden: Insufficient permissions' });
         return;

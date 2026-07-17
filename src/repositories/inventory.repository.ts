@@ -1,10 +1,6 @@
-import { eq } from "drizzle-orm";
-import { db } from "../db/index.js";
-import {
-  inventories,
-  Inventory,
-  NewInventory,
-} from "../models/inventory.model.js";
+import { eq } from 'drizzle-orm';
+import { db } from '../db/index.js';
+import { inventories, Inventory, NewInventory } from '../models/inventory.model.js';
 
 export class InventoryRepository {
   async findAll(): Promise<Inventory[]> {
@@ -12,10 +8,7 @@ export class InventoryRepository {
   }
 
   async findById(id: number): Promise<Inventory | undefined> {
-    const result = await db
-      .select()
-      .from(inventories)
-      .where(eq(inventories.id, id));
+    const result = await db.select().from(inventories).where(eq(inventories.id, id));
     return result[0];
   }
 
@@ -24,10 +17,7 @@ export class InventoryRepository {
     return result[0];
   }
 
-  async update(
-    id: number,
-    inventory: Partial<NewInventory>,
-  ): Promise<Inventory | undefined> {
+  async update(id: number, inventory: Partial<NewInventory>): Promise<Inventory | undefined> {
     const result = await db
       .update(inventories)
       .set({ ...inventory, updatedAt: new Date() })
@@ -37,10 +27,7 @@ export class InventoryRepository {
   }
 
   async delete(id: number): Promise<Inventory | undefined> {
-    const result = await db
-      .delete(inventories)
-      .where(eq(inventories.id, id))
-      .returning();
+    const result = await db.delete(inventories).where(eq(inventories.id, id)).returning();
     return result[0];
   }
 }

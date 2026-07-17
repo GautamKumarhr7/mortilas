@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db/index.js';
-import { attendance, Attendance, NewAttendance } from '../models/attendance.model.js';
+import { attendance, Attendance, NewAttendance } from '../models/hr/attendance.model.js';
 
 export class AttendanceRepository {
   async findAll(): Promise<Attendance[]> {
@@ -18,7 +18,11 @@ export class AttendanceRepository {
   }
 
   async update(id: number, att: Partial<NewAttendance>): Promise<Attendance | undefined> {
-    const result = await db.update(attendance).set({ ...att, updatedAt: new Date() }).where(eq(attendance.id, id)).returning();
+    const result = await db
+      .update(attendance)
+      .set({ ...att, updatedAt: new Date() })
+      .where(eq(attendance.id, id))
+      .returning();
     return result[0];
   }
 

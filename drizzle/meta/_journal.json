@@ -71,6 +71,20 @@
       "when": 1784250000005,
       "tag": "0009_vendor_and_subcontractor_crud",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1784282221681,
+      "tag": "0010_thin_eternals",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1784315682830,
+      "tag": "0011_parallel_triton",
+      "breakpoints": true
     }
   ]
 }

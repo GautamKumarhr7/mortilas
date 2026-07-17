@@ -18,7 +18,11 @@ export class ModuleRepository {
   }
 
   async update(id: number, data: Partial<NewModule>): Promise<Module | undefined> {
-    const result = await db.update(module).set({ ...data, updatedAt: new Date() }).where(eq(module.id, id)).returning();
+    const result = await db
+      .update(module)
+      .set({ ...data, updatedAt: new Date() })
+      .where(eq(module.id, id))
+      .returning();
     return result[0];
   }
 

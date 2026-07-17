@@ -8,7 +8,9 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    res.status(401).json({ success: false, message: 'Unauthorized: Missing or invalid Bearer token' });
+    res
+      .status(401)
+      .json({ success: false, message: 'Unauthorized: Missing or invalid Bearer token' });
     return;
   }
 

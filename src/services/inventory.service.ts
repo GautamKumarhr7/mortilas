@@ -1,5 +1,5 @@
-import { InventoryRepository } from "../repositories/inventory.repository.js";
-import { Inventory, NewInventory } from "../models/inventory.model.js";
+import { InventoryRepository } from '../repositories/inventory.repository.js';
+import { Inventory, NewInventory } from '../models/inventory.model.js';
 
 export class InventoryService {
   private inventoryRepository: InventoryRepository;
@@ -20,10 +20,7 @@ export class InventoryService {
     return await this.inventoryRepository.create(data);
   }
 
-  async updateInventory(
-    id: number,
-    data: Partial<NewInventory>,
-  ): Promise<Inventory | undefined> {
+  async updateInventory(id: number, data: Partial<NewInventory>): Promise<Inventory | undefined> {
     return await this.inventoryRepository.update(id, data);
   }
 

@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
-import { db } from "../db/index.js";
-import { submodules, SubModule, NewSubModule } from "../models/index.js";
+import { eq } from 'drizzle-orm';
+import { db } from '../db/index.js';
+import { submodules, SubModule, NewSubModule } from '../models/index.js';
 
 export class SubModuleRepository {
   async findAll(): Promise<SubModule[]> {
@@ -8,18 +8,12 @@ export class SubModuleRepository {
   }
 
   async findById(id: number): Promise<SubModule | undefined> {
-    const result = await db
-      .select()
-      .from(submodules)
-      .where(eq(submodules.id, id));
+    const result = await db.select().from(submodules).where(eq(submodules.id, id));
     return result[0];
   }
 
   async findByModuleId(moduleId: number): Promise<SubModule[]> {
-    return await db
-      .select()
-      .from(submodules)
-      .where(eq(submodules.moduleId, moduleId));
+    return await db.select().from(submodules).where(eq(submodules.moduleId, moduleId));
   }
 
   async create(data: NewSubModule): Promise<SubModule> {
@@ -27,10 +21,7 @@ export class SubModuleRepository {
     return result[0];
   }
 
-  async update(
-    id: number,
-    data: Partial<NewSubModule>,
-  ): Promise<SubModule | undefined> {
+  async update(id: number, data: Partial<NewSubModule>): Promise<SubModule | undefined> {
     const result = await db
       .update(submodules)
       .set({ ...data, updatedAt: new Date() })
@@ -40,10 +31,7 @@ export class SubModuleRepository {
   }
 
   async delete(id: number): Promise<SubModule | undefined> {
-    const result = await db
-      .delete(submodules)
-      .where(eq(submodules.id, id))
-      .returning();
+    const result = await db.delete(submodules).where(eq(submodules.id, id)).returning();
     return result[0];
   }
 }

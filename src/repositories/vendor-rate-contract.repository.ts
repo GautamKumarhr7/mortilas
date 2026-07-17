@@ -1,10 +1,10 @@
-import { eq } from "drizzle-orm";
-import { db } from "../db/index.js";
+import { eq } from 'drizzle-orm';
+import { db } from '../db/index.js';
 import {
   vendorRateContracts,
   VendorRateContract,
   NewVendorRateContract,
-} from "../models/vendor-rate-contract.model.js";
+} from '../models/vendor-rate-contract.model.js';
 
 export class VendorRateContractRepository {
   async findAll(): Promise<VendorRateContract[]> {
@@ -20,10 +20,7 @@ export class VendorRateContractRepository {
   }
 
   async create(data: NewVendorRateContract): Promise<VendorRateContract> {
-    const result = await db
-      .insert(vendorRateContracts)
-      .values(data)
-      .returning();
+    const result = await db.insert(vendorRateContracts).values(data).returning();
     return result[0];
   }
 

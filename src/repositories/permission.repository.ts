@@ -18,7 +18,11 @@ export class PermissionRepository {
   }
 
   async update(id: number, data: Partial<NewPermission>): Promise<Permission | undefined> {
-    const result = await db.update(permissions).set({ ...data, updatedAt: new Date() }).where(eq(permissions.id, id)).returning();
+    const result = await db
+      .update(permissions)
+      .set({ ...data, updatedAt: new Date() })
+      .where(eq(permissions.id, id))
+      .returning();
     return result[0];
   }
 

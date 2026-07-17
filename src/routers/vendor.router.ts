@@ -1,40 +1,40 @@
-import { Router } from "express";
-import { VendorController } from "../controllers/vendor.controller.js";
-import { asyncWrapper } from "../utils/asyncWrapper.js";
-import { authenticate } from "../middlewares/auth.middleware.js";
-import { authorize } from "../middlewares/permission.middleware.js";
+import { Router } from 'express';
+import { VendorController } from '../controllers/vendor.controller.js';
+import { asyncWrapper } from '../utils/asyncWrapper.js';
+import { authenticate } from '../middlewares/auth.middleware.js';
+import { authorize } from '../middlewares/permission.middleware.js';
 
 const router = Router();
 const vendorController = new VendorController();
 
 router.get(
-  "/",
+  '/',
   authenticate,
-  authorize("VENDOR", "READ"),
+  authorize('VENDOR', 'READ'),
   asyncWrapper(vendorController.getAllVendors),
 );
 router.get(
-  "/:id",
+  '/:id',
   authenticate,
-  authorize("VENDOR", "READ"),
+  authorize('VENDOR', 'READ'),
   asyncWrapper(vendorController.getVendorById),
 );
 router.post(
-  "/",
+  '/',
   authenticate,
-  authorize("VENDOR", "CREATE"),
+  authorize('VENDOR', 'CREATE'),
   asyncWrapper(vendorController.createVendor),
 );
 router.put(
-  "/:id",
+  '/:id',
   authenticate,
-  authorize("VENDOR", "UPDATE"),
+  authorize('VENDOR', 'UPDATE'),
   asyncWrapper(vendorController.updateVendor),
 );
 router.delete(
-  "/:id",
+  '/:id',
   authenticate,
-  authorize("VENDOR", "DELETE"),
+  authorize('VENDOR', 'DELETE'),
   asyncWrapper(vendorController.deleteVendor),
 );
 

@@ -1,7 +1,7 @@
-import { eq, like } from "drizzle-orm";
-import { randomUUID } from "node:crypto";
-import { db } from "../db/index.js";
-import { vendors, Vendor, NewVendor } from "../models/vendor.model.js";
+import { eq, like } from 'drizzle-orm';
+import { randomUUID } from 'node:crypto';
+import { db } from '../db/index.js';
+import { vendors, Vendor, NewVendor } from '../models/vendor.model.js';
 
 export class VendorRepository {
   async findAll(): Promise<Vendor[]> {
@@ -14,10 +14,7 @@ export class VendorRepository {
   }
 
   async findByVendorCode(vendorCode: string): Promise<Vendor | undefined> {
-    const result = await db
-      .select()
-      .from(vendors)
-      .where(eq(vendors.vendorCode, vendorCode));
+    const result = await db.select().from(vendors).where(eq(vendors.vendorCode, vendorCode));
     return result[0];
   }
 
@@ -37,10 +34,7 @@ export class VendorRepository {
     return result[0];
   }
 
-  async update(
-    id: string,
-    vendor: Partial<NewVendor>,
-  ): Promise<Vendor | undefined> {
+  async update(id: string, vendor: Partial<NewVendor>): Promise<Vendor | undefined> {
     const result = await db
       .update(vendors)
       .set({ ...vendor, updatedAt: new Date() })
@@ -50,10 +44,7 @@ export class VendorRepository {
   }
 
   async delete(id: string): Promise<Vendor | undefined> {
-    const result = await db
-      .delete(vendors)
-      .where(eq(vendors.id, id))
-      .returning();
+    const result = await db.delete(vendors).where(eq(vendors.id, id)).returning();
     return result[0];
   }
 }

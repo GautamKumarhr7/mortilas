@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db/index.js';
-import { leaveRequests, LeaveRequest, NewLeaveRequest } from '../models/leave-request.model.js';
+import { leaveRequests, LeaveRequest, NewLeaveRequest } from '../models/hr/leave-request.model.js';
 
 export class LeaveRequestRepository {
   async findAll(): Promise<LeaveRequest[]> {
@@ -17,8 +17,15 @@ export class LeaveRequestRepository {
     return result[0];
   }
 
-  async update(id: number, leaveRequest: Partial<NewLeaveRequest>): Promise<LeaveRequest | undefined> {
-    const result = await db.update(leaveRequests).set({ ...leaveRequest, updatedAt: new Date() }).where(eq(leaveRequests.id, id)).returning();
+  async update(
+    id: number,
+    leaveRequest: Partial<NewLeaveRequest>,
+  ): Promise<LeaveRequest | undefined> {
+    const result = await db
+      .update(leaveRequests)
+      .set({ ...leaveRequest, updatedAt: new Date() })
+      .where(eq(leaveRequests.id, id))
+      .returning();
     return result[0];
   }
 

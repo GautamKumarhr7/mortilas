@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { InventoryService } from "../services/inventory.service.js";
+import { Request, Response, NextFunction } from 'express';
+import { InventoryService } from '../services/inventory.service.js';
 
 export class InventoryController {
   private inventoryService: InventoryService;
@@ -8,24 +8,16 @@ export class InventoryController {
     this.inventoryService = new InventoryService();
   }
 
-  getAllInventories = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
+  getAllInventories = async (req: Request, res: Response, next: NextFunction) => {
     const inventories = await this.inventoryService.getAllInventories();
     res.status(200).json({ success: true, data: inventories });
   };
 
-  getInventoryById = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
+  getInventoryById = async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id as string, 10);
     const inventory = await this.inventoryService.getInventoryById(id);
     if (!inventory) {
-      res.status(404).json({ success: false, message: "Inventory not found" });
+      res.status(404).json({ success: false, message: 'Inventory not found' });
       return;
     }
     res.status(200).json({ success: true, data: inventory });
@@ -40,7 +32,7 @@ export class InventoryController {
     const id = parseInt(req.params.id as string, 10);
     const inventory = await this.inventoryService.updateInventory(id, req.body);
     if (!inventory) {
-      res.status(404).json({ success: false, message: "Inventory not found" });
+      res.status(404).json({ success: false, message: 'Inventory not found' });
       return;
     }
     res.status(200).json({ success: true, data: inventory });
@@ -50,9 +42,9 @@ export class InventoryController {
     const id = parseInt(req.params.id as string, 10);
     const inventory = await this.inventoryService.deleteInventory(id);
     if (!inventory) {
-      res.status(404).json({ success: false, message: "Inventory not found" });
+      res.status(404).json({ success: false, message: 'Inventory not found' });
       return;
     }
-    res.status(200).json({ success: true, message: "Inventory deleted" });
+    res.status(200).json({ success: true, message: 'Inventory deleted' });
   };
 }

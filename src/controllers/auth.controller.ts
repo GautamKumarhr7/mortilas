@@ -10,7 +10,7 @@ export class AuthController {
 
   login = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
-    
+
     if (!email || !password) {
       res.status(400).json({ success: false, message: 'Email and password are required' });
       return;
@@ -25,10 +25,10 @@ export class AuthController {
     const { user, accessToken, refreshToken } = result;
     // Omit password from user response
     const { password: _, ...userWithoutPassword } = user;
-    
-    res.status(200).json({ 
-      success: true, 
-      data: { user: userWithoutPassword, accessToken, refreshToken } 
+
+    res.status(200).json({
+      success: true,
+      data: { user: userWithoutPassword, accessToken, refreshToken },
     });
   };
 

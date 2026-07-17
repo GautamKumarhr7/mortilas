@@ -1,6 +1,6 @@
-import { eq, like } from "drizzle-orm";
-import { db } from "../db/index.js";
-import { projects, Project, NewProject } from "../models/project.model.js";
+import { eq, like } from 'drizzle-orm';
+import { db } from '../db/index.js';
+import { projects, Project, NewProject } from '../models/projectMaster/project.model.js';
 
 export class ProjectRepository {
   async findAll(): Promise<Project[]> {
@@ -13,10 +13,7 @@ export class ProjectRepository {
   }
 
   async findByProjectCode(projectCode: string): Promise<Project | undefined> {
-    const result = await db
-      .select()
-      .from(projects)
-      .where(eq(projects.projectCode, projectCode));
+    const result = await db.select().from(projects).where(eq(projects.projectCode, projectCode));
     return result[0];
   }
 
@@ -34,10 +31,7 @@ export class ProjectRepository {
     return result[0];
   }
 
-  async update(
-    id: number,
-    project: Partial<NewProject>,
-  ): Promise<Project | undefined> {
+  async update(id: number, project: Partial<NewProject>): Promise<Project | undefined> {
     const result = await db
       .update(projects)
       .set({ ...project, updatedAt: new Date() })
@@ -47,10 +41,7 @@ export class ProjectRepository {
   }
 
   async delete(id: number): Promise<Project | undefined> {
-    const result = await db
-      .delete(projects)
-      .where(eq(projects.id, id))
-      .returning();
+    const result = await db.delete(projects).where(eq(projects.id, id)).returning();
     return result[0];
   }
 }

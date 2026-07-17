@@ -1,40 +1,40 @@
-import { Router } from "express";
-import { InventoryController } from "../controllers/inventory.controller.js";
-import { asyncWrapper } from "../utils/asyncWrapper.js";
-import { authenticate } from "../middlewares/auth.middleware.js";
-import { authorize } from "../middlewares/permission.middleware.js";
+import { Router } from 'express';
+import { InventoryController } from '../controllers/inventory.controller.js';
+import { asyncWrapper } from '../utils/asyncWrapper.js';
+import { authenticate } from '../middlewares/auth.middleware.js';
+import { authorize } from '../middlewares/permission.middleware.js';
 
 const router = Router();
 const inventoryController = new InventoryController();
 
 router.get(
-  "/",
+  '/',
   authenticate,
-  authorize("INVENTORY", "READ"),
+  authorize('INVENTORY', 'READ'),
   asyncWrapper(inventoryController.getAllInventories),
 );
 router.get(
-  "/:id",
+  '/:id',
   authenticate,
-  authorize("INVENTORY", "READ"),
+  authorize('INVENTORY', 'READ'),
   asyncWrapper(inventoryController.getInventoryById),
 );
 router.post(
-  "/",
+  '/',
   authenticate,
-  authorize("INVENTORY", "CREATE"),
+  authorize('INVENTORY', 'CREATE'),
   asyncWrapper(inventoryController.createInventory),
 );
 router.put(
-  "/:id",
+  '/:id',
   authenticate,
-  authorize("INVENTORY", "UPDATE"),
+  authorize('INVENTORY', 'UPDATE'),
   asyncWrapper(inventoryController.updateInventory),
 );
 router.delete(
-  "/:id",
+  '/:id',
   authenticate,
-  authorize("INVENTORY", "DELETE"),
+  authorize('INVENTORY', 'DELETE'),
   asyncWrapper(inventoryController.deleteInventory),
 );
 

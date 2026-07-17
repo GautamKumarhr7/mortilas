@@ -1,6 +1,13 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db/index.js';
-import { rolePermissions, RolePermission, NewRolePermission, submodules, module, permissions } from '../models/index.js';
+import {
+  rolePermissions,
+  RolePermission,
+  NewRolePermission,
+  submodules,
+  module,
+  permissions,
+} from '../models/index.js';
 
 export class RolePermissionRepository {
   async findAll(): Promise<RolePermission[]> {
@@ -35,21 +42,22 @@ export class RolePermissionRepository {
   }
 
   async findModulesAndSubmodulesByRoleId(roleId: number) {
-    const records = await db.select({
-      moduleId: module.id,
-      moduleName: module.name,
-      moduleCode: module.code,
-      submoduleId: submodules.id,
-      submoduleName: submodules.name,
-      submoduleCode: submodules.code,
-      permissionId: permissions.id,
-      permissionName: permissions.name,
-    })
-    .from(rolePermissions)
-    .innerJoin(submodules, eq(rolePermissions.subModuleId, submodules.id))
-    .innerJoin(module, eq(submodules.moduleId, module.id))
-    .innerJoin(permissions, eq(rolePermissions.permissionId, permissions.id))
-    .where(eq(rolePermissions.roleId, roleId));
+    const records = await db
+      .select({
+        moduleId: module.id,
+        moduleName: module.name,
+        moduleCode: module.code,
+        submoduleId: submodules.id,
+        submoduleName: submodules.name,
+        submoduleCode: submodules.code,
+        permissionId: permissions.id,
+        permissionName: permissions.name,
+      })
+      .from(rolePermissions)
+      .innerJoin(submodules, eq(rolePermissions.subModuleId, submodules.id))
+      .innerJoin(module, eq(submodules.moduleId, module.id))
+      .innerJoin(permissions, eq(rolePermissions.permissionId, permissions.id))
+      .where(eq(rolePermissions.roleId, roleId));
 
     // Grouping by Module -> Submodule -> Permissions
     const modulesMap = new Map<number, any>();
@@ -60,7 +68,7 @@ export class RolePermissionRepository {
           id: record.moduleId,
           name: record.moduleName,
           code: record.moduleCode,
-          submodules: new Map<number, any>()
+          submodules: new Map<number, any>(),
         });
       }
 
@@ -71,21 +79,21 @@ export class RolePermissionRepository {
           id: record.submoduleId,
           name: record.submoduleName,
           code: record.submoduleCode,
-          permissions: []
+          permissions: [],
         });
       }
 
       const currentSubmodule = currentModule.submodules.get(record.submoduleId);
       currentSubmodule.permissions.push({
         id: record.permissionId,
-        name: record.permissionName
+        name: record.permissionName,
       });
     }
 
     // Convert Maps back to Arrays
-    return Array.from(modulesMap.values()).map(mod => ({
+    return Array.from(modulesMap.values()).map((mod) => ({
       ...mod,
-      submodules: Array.from(mod.submodules.values())
+      submodules: Array.from(mod.submodules.values()),
     }));
   }
 }

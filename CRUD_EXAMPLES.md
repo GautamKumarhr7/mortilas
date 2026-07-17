@@ -4,6 +4,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 
 ## 1. Client
 
+**Endpoint**: `POST /api/clients`
+
 ```json
 {
   "name": "ABC Builders Pvt Ltd",
@@ -16,6 +18,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 ```
 
 ## 2. Inventory
+
+**Endpoint**: `POST /api/inventories`
 
 ```json
 {
@@ -31,6 +35,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 ```
 
 ## 3. Material Indent Item
+
+**Endpoint**: `POST /api/material-indent-items`
 
 ```json
 {
@@ -48,6 +54,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 ## 4. Project
 
 `projectCode` is optional. If omitted, the backend generates a value like `MECPL-ELEC-2025-001`.
+
+**Endpoint**: `POST /api/projects`
 
 ```json
 {
@@ -72,6 +80,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 ## 5. Subcontractor
 
 `subcontractorCode` is optional. If omitted, the backend generates a value like `SUB0001`.
+
+**Endpoint**: `POST /api/subcontractors`
 
 ```json
 {
@@ -109,6 +119,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 
 ## 6. Subcontractor Rate Contract
 
+**Endpoint**: `POST /api/subcontractor-rate-contracts`
+
 ```json
 {
   "subcontractorId": "b3b2e0a0-0c1d-4df2-9f6c-2e8d1f2d6b11",
@@ -124,6 +136,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 ## 7. Vendor
 
 `vendorCode` is optional. If omitted, the backend generates a value like `VEN0001`.
+
+**Endpoint**: `POST /api/vendors`
 
 ```json
 {
@@ -159,6 +173,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 
 ## 8. Vendor Rate Contract
 
+**Endpoint**: `POST /api/vendor-rate-contracts`
+
 ```json
 {
   "vendorId": "d7b5c5d0-9f84-4a31-bb91-1c3d0c5a7a22",
@@ -174,6 +190,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 ## 9. Work Order
 
 `workOrderNo` is optional. If omitted, the backend generates a value like `WO-00012`.
+
+**Endpoint**: `POST /api/work-orders`
 
 ```json
 {
@@ -191,6 +209,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 ```
 
 ## 10. Employee (User with type 'employee')
+
+**Endpoint**: `POST /api/users`
 
 ```json
 {
@@ -216,6 +236,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 
 ## 11. Attendance
 
+**Endpoint**: `POST /api/attendance`
+
 ```json
 {
   "employeeId": 5,
@@ -228,6 +250,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 ```
 
 ## 12. Leave Request
+
+**Endpoint**: `POST /api/leave-requests`
 
 ```json
 {
@@ -258,6 +282,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 
 ## 14. Reimbursement
 
+**Endpoint**: `POST /api/reimbursements`
+
 ```json
 {
   "employeeId": 5,
@@ -270,6 +296,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 ```
 
 ## 15. Job Post
+
+**Endpoint**: `POST /api/job-posts`
 
 ```json
 {
@@ -285,6 +313,8 @@ This file collects example create request bodies for the CRUD APIs added today.
 ```
 
 ## 16. Applicant Application
+
+**Endpoint**: `POST /api/applicants`
 
 ```json
 {

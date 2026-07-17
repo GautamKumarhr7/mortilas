@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
-import { db } from "../db/index.js";
-import { clients, Client, NewClient } from "../models/client.model.js";
+import { eq } from 'drizzle-orm';
+import { db } from '../db/index.js';
+import { clients, Client, NewClient } from '../models/client.model.js';
 
 export class ClientRepository {
   async findAll(): Promise<Client[]> {
@@ -13,10 +13,7 @@ export class ClientRepository {
   }
 
   async findByEmail(email: string): Promise<Client | undefined> {
-    const result = await db
-      .select()
-      .from(clients)
-      .where(eq(clients.email, email));
+    const result = await db.select().from(clients).where(eq(clients.email, email));
     return result[0];
   }
 
@@ -25,10 +22,7 @@ export class ClientRepository {
     return result[0];
   }
 
-  async update(
-    id: number,
-    client: Partial<NewClient>,
-  ): Promise<Client | undefined> {
+  async update(id: number, client: Partial<NewClient>): Promise<Client | undefined> {
     const result = await db
       .update(clients)
       .set({ ...client, updatedAt: new Date() })
@@ -38,10 +32,7 @@ export class ClientRepository {
   }
 
   async delete(id: number): Promise<Client | undefined> {
-    const result = await db
-      .delete(clients)
-      .where(eq(clients.id, id))
-      .returning();
+    const result = await db.delete(clients).where(eq(clients.id, id)).returning();
     return result[0];
   }
 }

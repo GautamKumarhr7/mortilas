@@ -1,9 +1,9 @@
-import { VendorRepository } from "../repositories/vendor.repository.js";
-import { Vendor, NewVendor } from "../models/vendor.model.js";
+import { VendorRepository } from '../repositories/vendor.repository.js';
+import { Vendor, NewVendor } from '../models/vendor.model.js';
 import {
   generateSequentialCode,
   normalizeSequentialCode,
-} from "../helpers/sequential-code.helper.js";
+} from '../helpers/sequential-code.helper.js';
 
 const VENDOR_CODE_PATTERN = /^VEN\d{4}$/;
 
@@ -24,44 +24,35 @@ export class VendorService {
 
   async createVendor(vendorData: Partial<NewVendor>): Promise<Vendor> {
     const vendorCode = vendorData.vendorCode
-      ? normalizeSequentialCode(
-          vendorData.vendorCode,
-          VENDOR_CODE_PATTERN,
-          "VEN0001",
-        )
+      ? normalizeSequentialCode(vendorData.vendorCode, VENDOR_CODE_PATTERN, 'VEN0001')
       : generateSequentialCode(
-          "VEN",
-          await this.vendorRepository.findVendorCodesByPrefix("VEN"),
+          'VEN',
+          await this.vendorRepository.findVendorCodesByPrefix('VEN'),
           4,
         );
 
-    const existingVendor =
-      await this.vendorRepository.findByVendorCode(vendorCode);
+    const existingVendor = await this.vendorRepository.findByVendorCode(vendorCode);
     if (existingVendor) {
-      throw new Error("Vendor with this code already exists");
+      throw new Error('Vendor with this code already exists');
     }
 
     return await this.vendorRepository.create({
       ...vendorData,
       vendorCode,
-      status: vendorData.status ?? "Active",
+      status: vendorData.status ?? 'Active',
     } as NewVendor);
   }
 
-  async updateVendor(
-    id: string,
-    vendorData: Partial<NewVendor>,
-  ): Promise<Vendor | undefined> {
+  async updateVendor(id: string, vendorData: Partial<NewVendor>): Promise<Vendor | undefined> {
     if (vendorData.vendorCode) {
       const vendorCode = normalizeSequentialCode(
         vendorData.vendorCode,
         VENDOR_CODE_PATTERN,
-        "VEN0001",
+        'VEN0001',
       );
-      const existingVendor =
-        await this.vendorRepository.findByVendorCode(vendorCode);
+      const existingVendor = await this.vendorRepository.findByVendorCode(vendorCode);
       if (existingVendor && existingVendor.id !== id) {
-        throw new Error("Vendor with this code already exists");
+        throw new Error('Vendor with this code already exists');
       }
 
       return await this.vendorRepository.update(id, {

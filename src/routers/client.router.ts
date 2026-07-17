@@ -1,40 +1,40 @@
-import { Router } from "express";
-import { ClientController } from "../controllers/client.controller.js";
-import { asyncWrapper } from "../utils/asyncWrapper.js";
-import { authenticate } from "../middlewares/auth.middleware.js";
-import { authorize } from "../middlewares/permission.middleware.js";
+import { Router } from 'express';
+import { ClientController } from '../controllers/client.controller.js';
+import { asyncWrapper } from '../utils/asyncWrapper.js';
+import { authenticate } from '../middlewares/auth.middleware.js';
+import { authorize } from '../middlewares/permission.middleware.js';
 
 const router = Router();
 const clientController = new ClientController();
 
 router.get(
-  "/",
+  '/',
   authenticate,
-  authorize("CLIENT", "READ"),
+  authorize('CLIENT', 'READ'),
   asyncWrapper(clientController.getAllClients),
 );
 router.get(
-  "/:id",
+  '/:id',
   authenticate,
-  authorize("CLIENT", "READ"),
+  authorize('CLIENT', 'READ'),
   asyncWrapper(clientController.getClientById),
 );
 router.post(
-  "/",
+  '/',
   authenticate,
-  authorize("CLIENT", "CREATE"),
+  authorize('CLIENT', 'CREATE'),
   asyncWrapper(clientController.createClient),
 );
 router.put(
-  "/:id",
+  '/:id',
   authenticate,
-  authorize("CLIENT", "UPDATE"),
+  authorize('CLIENT', 'UPDATE'),
   asyncWrapper(clientController.updateClient),
 );
 router.delete(
-  "/:id",
+  '/:id',
   authenticate,
-  authorize("CLIENT", "DELETE"),
+  authorize('CLIENT', 'DELETE'),
   asyncWrapper(clientController.deleteClient),
 );
 
