@@ -75,8 +75,10 @@ export class ApplicantService {
   async select(id: number, selectedBy: number): Promise<Applicant | undefined> {
     const applicant = await this.repo.findById(id);
     if (!applicant) throw new Error('Applicant not found');
-    if (applicant.status !== 'interview_scheduled')
-      throw new Error('Only interviewed candidates can be selected');
+    // Relaxed check: can select from applied, shortlisted, or interview_scheduled
+    if (applicant.status === 'selected' || applicant.status === 'rejected' || applicant.status === 'onboarded') {
+      throw new Error('Candidate is already selected, rejected, or onboarded');
+    }
 
     return await this.repo.update(id, {
       status: 'selected',
