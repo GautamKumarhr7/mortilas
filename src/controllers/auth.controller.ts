@@ -32,6 +32,25 @@ export class AuthController {
     });
   };
 
+  register = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { name, email, password } = req.body;
+      if (!name || !email || !password) {
+        res.status(400).json({ success: false, message: 'Name, email, and password are required' });
+        return;
+      }
+      const user = await this.authService.register(req.body);
+      const { password: _, ...userWithoutPassword } = user;
+      res.status(201).json({ success: true, data: userWithoutPassword, message: 'Registration successful' });
+    } catch (error: any) {
+      if (error.message === 'Email already registered') {
+        res.status(409).json({ success: false, message: error.message });
+      } else {
+        next(error);
+      }
+    }
+  };
+
   refreshToken = async (req: Request, res: Response, next: NextFunction) => {
     const { token } = req.body;
     if (!token) {

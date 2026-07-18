@@ -41,7 +41,26 @@ export class ApplicantController {
 
   apply = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      res.status(201).json({ success: true, data: await this.service.apply(req.body) });
+      const payload = { ...req.body };
+      
+      // Parse JSON strings from FormData if they exist
+      if (typeof payload.education === 'string') {
+        try { payload.education = JSON.parse(payload.education); } catch(e) {}
+      }
+      if (typeof payload.experience === 'string') {
+        try { payload.experience = JSON.parse(payload.experience); } catch(e) {}
+      }
+      
+      // Parse integers
+      if (payload.jobPostId) payload.jobPostId = parseInt(payload.jobPostId, 10);
+      if (payload.userId) payload.userId = parseInt(payload.userId, 10);
+
+      // Handle file
+      if (req.file) {
+        payload.resumeUrl = req.file.path;
+      }
+
+      res.status(201).json({ success: true, data: await this.service.apply(payload) });
     } catch (e) {
       next(e);
     }

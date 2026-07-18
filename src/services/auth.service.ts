@@ -34,6 +34,26 @@ export class AuthService {
     return { user, accessToken, refreshToken };
   }
 
+  async register(data: any): Promise<User> {
+    const existingUser = await this.userRepository.findByEmail(data.email);
+    if (existingUser) {
+      throw new Error('Email already registered');
+    }
+
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    
+    const newUser = await this.userRepository.create({
+      ...data,
+      password: hashedPassword,
+      type: 'applicant',
+      designationId: 0,
+      roleId: 0,
+      dob: data.dob || new Date('2000-01-01').toISOString().split('T')[0], // required field
+    });
+
+    return newUser;
+  }
+
   async refreshToken(token: string): Promise<{ accessToken: string } | null> {
     try {
       const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET as string) as {

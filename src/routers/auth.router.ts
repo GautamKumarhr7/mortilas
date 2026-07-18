@@ -5,6 +5,7 @@ import { asyncWrapper } from '../utils/asyncWrapper.js';
 const router = Router();
 const authController = new AuthController();
 
+router.post('/register', asyncWrapper(authController.register));
 router.post('/login', asyncWrapper(authController.login));
 router.post('/refresh', asyncWrapper(authController.refreshToken));
 

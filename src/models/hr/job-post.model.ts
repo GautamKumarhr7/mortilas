@@ -1,4 +1,4 @@
-import { pgTable, serial, integer, varchar, timestamp, text, date } from 'drizzle-orm/pg-core';
+import { pgTable, serial, integer, varchar, timestamp, text, date, numeric } from 'drizzle-orm/pg-core';
 import { users } from './user.model.js';
 import { module } from '../authority/module.model.js';
 import { roles } from '../authority/role.model.js';
@@ -15,6 +15,7 @@ export const jobPosts = pgTable('job_posts', {
   designationId: integer('designation_id').references(() => roles.id),
   employmentType: varchar('employment_type', { length: 50 }), // permanent, contract, trainee
   vacancies: integer('vacancies').default(1).notNull(),
+  basicPay: numeric('basic_pay'),
   lastDate: date('last_date'),
 
   status: varchar('status', { length: 50 }).default('active').notNull(), // draft, active, closed

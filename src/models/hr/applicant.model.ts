@@ -7,6 +7,7 @@ import {
   text,
   date,
   numeric,
+  jsonb,
 } from 'drizzle-orm/pg-core';
 import { jobPosts } from './job-post.model.js';
 import { users } from './user.model.js';
@@ -16,11 +17,14 @@ export const applicants = pgTable('applicants', {
   jobPostId: integer('job_post_id')
     .references(() => jobPosts.id)
     .notNull(),
+  userId: integer('user_id').references(() => users.id), // Registered applicant user
 
   // Personal info
   name: varchar('name', { length: 255 }).notNull(),
   email: varchar('email', { length: 255 }).notNull(),
   phone: varchar('phone', { length: 20 }),
+  education: jsonb('education'), // [{ level, institute, passingYear, cgpa }]
+  experience: jsonb('experience'), // [{ name, jobRole, description, salary }]
   resumeUrl: varchar('resume_url', { length: 500 }), // uploaded file path / URL
 
   // Application workflow status
