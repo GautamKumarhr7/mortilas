@@ -23,8 +23,9 @@ export class AttendanceService {
 
     const existingAtt = await this.attendanceRepository.findByEmployeeIdAndDate(employeeId, today);
 
-    const log = {
-      punchTime: currentTime
+    const log: Omit<NewAttendanceLog, 'attendanceId'> = {
+      punchTime: currentTime,
+      punchType: status
     };
 
     if (!existingAtt) {

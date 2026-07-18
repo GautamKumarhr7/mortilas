@@ -10,19 +10,16 @@ const projectController = new ProjectController();
 router.get(
   '/',
   authenticate,
-  authorize('PROJECT', 'READ'),
   asyncWrapper(projectController.getAllProjects),
 );
 router.get(
   '/:id',
   authenticate,
-  authorize('PROJECT', 'READ'),
   asyncWrapper(projectController.getProjectById),
 );
 router.post(
   '/',
   authenticate,
-  authorize('PROJECT', 'CREATE'),
   asyncWrapper(projectController.createProject),
 );
 router.put(

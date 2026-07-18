@@ -1,0 +1,1 @@
+ALTER TABLE "attendance_log" ADD COLUMN "punch_type" varchar(50) DEFAULT 'in' NOT NULL;

@@ -10,31 +10,26 @@ const workOrderController = new WorkOrderController();
 router.get(
   '/',
   authenticate,
-  authorize('WORK_ORDER', 'READ'),
   asyncWrapper(workOrderController.getAllWorkOrders),
 );
 router.get(
   '/:id',
   authenticate,
-  authorize('WORK_ORDER', 'READ'),
   asyncWrapper(workOrderController.getWorkOrderById),
 );
 router.post(
   '/',
   authenticate,
-  authorize('WORK_ORDER', 'CREATE'),
   asyncWrapper(workOrderController.createWorkOrder),
 );
 router.put(
   '/:id',
   authenticate,
-  authorize('WORK_ORDER', 'UPDATE'),
   asyncWrapper(workOrderController.updateWorkOrder),
 );
 router.delete(
   '/:id',
   authenticate,
-  authorize('WORK_ORDER', 'DELETE'),
   asyncWrapper(workOrderController.deleteWorkOrder),
 );
 

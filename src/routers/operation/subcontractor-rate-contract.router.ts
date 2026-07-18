@@ -10,31 +10,23 @@ const subcontractorRateContractController = new SubcontractorRateContractControl
 router.get(
   '/',
   authenticate,
-  authorize('SUBCONTRACTOR_RATE_CONTRACT', 'READ'),
   asyncWrapper(subcontractorRateContractController.getAllSubcontractorRateContracts),
 );
 router.get(
   '/:id',
   authenticate,
-  authorize('SUBCONTRACTOR_RATE_CONTRACT', 'READ'),
   asyncWrapper(subcontractorRateContractController.getSubcontractorRateContractById),
 );
 router.post(
   '/',
-  authenticate,
-  authorize('SUBCONTRACTOR_RATE_CONTRACT', 'CREATE'),
   asyncWrapper(subcontractorRateContractController.createSubcontractorRateContract),
 );
 router.put(
   '/:id',
-  authenticate,
-  authorize('SUBCONTRACTOR_RATE_CONTRACT', 'UPDATE'),
   asyncWrapper(subcontractorRateContractController.updateSubcontractorRateContract),
 );
 router.delete(
   '/:id',
-  authenticate,
-  authorize('SUBCONTRACTOR_RATE_CONTRACT', 'DELETE'),
   asyncWrapper(subcontractorRateContractController.deleteSubcontractorRateContract),
 );
 

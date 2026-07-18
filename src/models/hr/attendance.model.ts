@@ -20,6 +20,7 @@ export const attendanceLog = pgTable('attendance_log', {
     .references(() => attendance.id)
     .notNull(),
   punchTime: time('punch_time').notNull(),
+  punchType: varchar('punch_type', { length: 50 }).default('in').notNull(), // 'in' or 'out'
   
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),

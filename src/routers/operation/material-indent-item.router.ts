@@ -10,31 +10,25 @@ const materialIndentItemController = new MaterialIndentItemController();
 router.get(
   '/',
   authenticate,
-  authorize('MATERIAL_INDENT_ITEM', 'READ'),
   asyncWrapper(materialIndentItemController.getAllMaterialIndentItems),
 );
 router.get(
   '/:id',
   authenticate,
-  authorize('MATERIAL_INDENT_ITEM', 'READ'),
   asyncWrapper(materialIndentItemController.getMaterialIndentItemById),
 );
 router.post(
   '/',
   authenticate,
-  authorize('MATERIAL_INDENT_ITEM', 'CREATE'),
   asyncWrapper(materialIndentItemController.createMaterialIndentItem),
 );
 router.put(
   '/:id',
   authenticate,
-  authorize('MATERIAL_INDENT_ITEM', 'UPDATE'),
   asyncWrapper(materialIndentItemController.updateMaterialIndentItem),
 );
 router.delete(
   '/:id',
-  authenticate,
-  authorize('MATERIAL_INDENT_ITEM', 'DELETE'),
   asyncWrapper(materialIndentItemController.deleteMaterialIndentItem),
 );
 
