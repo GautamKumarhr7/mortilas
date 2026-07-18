@@ -15,7 +15,7 @@ export class AttendanceRepository {
       return {
         ...att,
         clockIn: attLogs.length > 0 ? attLogs[0].punchTime : null,
-        clockOut: attLogs.length > 1 ? attLogs[attLogs.length - 1].punchTime : null,
+        clockOut: (att.status === 'out' && attLogs.length > 1) ? attLogs[attLogs.length - 1].punchTime : null,
         logs: attLogs
       };
     });
@@ -28,10 +28,11 @@ export class AttendanceRepository {
     const logs = await db.select().from(attendanceLog).where(eq(attendanceLog.attendanceId, id));
     logs.sort((a, b) => a.id - b.id);
     
+    const att = result[0];
     return {
-      ...result[0],
+      ...att,
       clockIn: logs.length > 0 ? logs[0].punchTime : null,
-      clockOut: logs.length > 1 ? logs[logs.length - 1].punchTime : null,
+      clockOut: (att.status === 'out' && logs.length > 1) ? logs[logs.length - 1].punchTime : null,
       logs
     };
   }
