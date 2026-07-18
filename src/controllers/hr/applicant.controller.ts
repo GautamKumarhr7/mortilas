@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ApplicantService } from '../../services/hr/applicant.service.js';
+import { put } from '@vercel/blob';
 
 export class ApplicantController {
   private service: ApplicantService;
@@ -55,9 +56,12 @@ export class ApplicantController {
       if (payload.jobPostId) payload.jobPostId = parseInt(payload.jobPostId, 10);
       if (payload.userId) payload.userId = parseInt(payload.userId, 10);
 
-      // Handle file
+      // Handle file using Vercel Blob
       if (req.file) {
-        payload.resumeUrl = req.file.path;
+        const blob = await put(`uploads/jobs/${Date.now()}-${req.file.originalname}`, req.file.buffer, { 
+          access: 'public' 
+        });
+        payload.resumeUrl = blob.url;
       }
 
       res.status(201).json({ success: true, data: await this.service.apply(payload) });
