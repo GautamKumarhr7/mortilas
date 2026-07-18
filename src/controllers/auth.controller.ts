@@ -34,9 +34,9 @@ export class AuthController {
 
   register = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { name, email, password, dob } = req.body;
-      if (!name || !email || !password || !dob) {
-        res.status(400).json({ success: false, message: 'Name, email, password, and date of birth are required' });
+      const { name, email, password, dob, pan, addhar } = req.body;
+      if (!name || !email || !password || !dob || !pan || !addhar) {
+        res.status(400).json({ success: false, message: 'Name, email, password, dob, PAN, and Aadhar are required' });
         return;
       }
       const user = await this.authService.register(req.body);
