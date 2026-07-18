@@ -17,9 +17,10 @@ export class AttendanceService {
   }
 
   async punch(employeeId: number, status: 'in' | 'out', attendanceType: 'manual' | 'biometric' = 'manual'): Promise<Attendance> {
-    const today = new Date().toISOString().split('T')[0];
     const now = new Date();
-    const currentTime = now.toTimeString().split(' ')[0]; // HH:MM:SS
+    // Use strictly UTC time for consistency
+    const today = now.toISOString().split('T')[0];
+    const currentTime = now.toISOString().split('T')[1].substring(0, 8); // HH:MM:SS
 
     const existingAtt = await this.attendanceRepository.findByEmployeeIdAndDate(employeeId, today);
 
