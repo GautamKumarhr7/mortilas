@@ -17,6 +17,16 @@ export class LeaveRequestController {
     }
   };
 
+  getLeaveRequestsByEmployeeId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = parseInt(req.params.userId as string, 10);
+      const leaveRequests = await this.leaveRequestService.getLeaveRequestsByEmployeeId(userId);
+      res.status(200).json({ success: true, data: leaveRequests });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   getLeaveRequestById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = parseInt(req.params.id as string, 10);

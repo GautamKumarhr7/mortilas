@@ -7,6 +7,7 @@ const router = Router();
 const leaveRequestController = new LeaveRequestController();
 
 router.get('/', authenticate, asyncWrapper(leaveRequestController.getAllLeaveRequests));
+router.get('/user/:userId', authenticate, asyncWrapper(leaveRequestController.getLeaveRequestsByEmployeeId));
 router.get('/:id', authenticate, asyncWrapper(leaveRequestController.getLeaveRequestById));
 router.post('/', authenticate, asyncWrapper(leaveRequestController.createLeaveRequest));
 router.put('/:id', authenticate, asyncWrapper(leaveRequestController.updateLeaveRequest));

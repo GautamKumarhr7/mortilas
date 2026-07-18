@@ -12,6 +12,10 @@ export class LeaveRequestRepository {
     return result[0];
   }
 
+  async findByEmployeeId(employeeId: number): Promise<LeaveRequest[]> {
+    return await db.select().from(leaveRequests).where(eq(leaveRequests.employeeId, employeeId));
+  }
+
   async create(leaveRequest: NewLeaveRequest): Promise<LeaveRequest> {
     const result = await db.insert(leaveRequests).values(leaveRequest).returning();
     return result[0];

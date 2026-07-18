@@ -16,6 +16,10 @@ export class LeaveRequestService {
     return await this.leaveRequestRepository.findAll();
   }
 
+  async getLeaveRequestsByEmployeeId(employeeId: number): Promise<LeaveRequest[]> {
+    return await this.leaveRequestRepository.findByEmployeeId(employeeId);
+  }
+
   async getLeaveRequestById(id: number): Promise<LeaveRequest | undefined> {
     return await this.leaveRequestRepository.findById(id);
   }

@@ -23,6 +23,7 @@ import { payrollRouter } from './hr/payroll.router.js';
 import { reimbursementRouter } from './hr/reimbursement.router.js';
 import { jobPostRouter } from './hr/job-post.router.js';
 import { applicantRouter } from './hr/applicant.router.js';
+import { leaveRouter } from './hr/leave.router.js';
 
 const router = Router();
 
@@ -46,6 +47,7 @@ router.use('/role-permissions', rolePermissionRouter);
 router.use('/employees', employeeRouter);
 router.use('/attendance', attendanceRouter);
 router.use('/leave-requests', leaveRequestRouter);
+router.use('/leaves', leaveRouter);
 router.use('/payrolls', payrollRouter);
 router.use('/reimbursements', reimbursementRouter);
 router.use('/job-posts', jobPostRouter);
