@@ -1,15 +1,18 @@
 import { ApplicantRepository } from '../../repositories/applicant.repository.js';
 import { EmployeeRepository } from '../../repositories/employee.repository.js';
+import { JobPostRepository } from '../../repositories/job-post.repository.js';
 import { Applicant, NewApplicant } from '../../models/hr/applicant.model.js';
 import bcrypt from 'bcrypt';
 
 export class ApplicantService {
   private repo: ApplicantRepository;
   private employeeRepo: EmployeeRepository;
+  private jobPostRepo: JobPostRepository;
 
   constructor() {
     this.repo = new ApplicantRepository();
     this.employeeRepo = new EmployeeRepository();
+    this.jobPostRepo = new JobPostRepository();
   }
 
   async getAll(): Promise<Applicant[]> {
@@ -110,42 +113,47 @@ export class ApplicantService {
   async onboard(
     id: number,
     onboardingData: {
-      dob: string; // YYYY-MM-DD
       joiningDate: string; // YYYY-MM-DD
       basicPay: number;
       documentPath?: string;
-      employeeCode: string;
-      designationId: number;
     },
   ): Promise<Applicant | undefined> {
     const applicant = await this.repo.findById(id);
     if (!applicant) throw new Error('Applicant not found');
     if (applicant.status !== 'selected')
       throw new Error('Only selected candidates can be onboarded');
+    
+    if (!applicant.userId) {
+      throw new Error('Cannot onboard: Applicant is not linked to a registered user account');
+    }
 
-    // Generate default password from DOB: YYYYMMDD
-    const defaultPassword = onboardingData.dob.replace(/-/g, '');
-    const hashedPassword = await bcrypt.hash(defaultPassword, 10);
+    // Fetch Job Post for Auto-Detection
+    const jobPost = await this.jobPostRepo.findById(applicant.jobPostId);
+    if (!jobPost) throw new Error('Job Post not found');
 
-    // Create user/employee record
-    const newEmployee = await this.employeeRepo.create({
-      name: applicant.name,
-      email: applicant.email,
-      password: hashedPassword,
+    const finalBasicPay = onboardingData.basicPay || jobPost.basicPay || 0;
+
+    // Update existing user/employee record
+    const updatedEmployee = await this.employeeRepo.update(applicant.userId, {
       type: 'employee',
-      dob: onboardingData.dob,
       dateOfJoining: onboardingData.joiningDate,
-      basicPay: String(onboardingData.basicPay),
-      employeeCode: onboardingData.employeeCode,
-      designationId: onboardingData.designationId,
+      basicPay: String(finalBasicPay),
+      employeeCode: `EMP-${applicant.userId.toString().padStart(4, '0')}`,
+      designationId: jobPost.designationId || 0,
+      departmentId: jobPost.departmentId,
+      employmentType: jobPost.employmentType,
     });
+
+    if (!updatedEmployee) {
+      throw new Error('Failed to update employee record during onboarding');
+    }
 
     // Update applicant record with onboarding info
     return await this.repo.update(id, {
       status: 'onboarded',
-      onboardedUserId: newEmployee.id,
+      onboardedUserId: updatedEmployee.id,
       joiningDate: onboardingData.joiningDate,
-      basicPay: String(onboardingData.basicPay),
+      basicPay: String(finalBasicPay),
       documentPath: onboardingData.documentPath,
     });
   }
