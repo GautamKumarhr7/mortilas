@@ -33,6 +33,7 @@ export const users = pgTable('users', {
   pan: varchar('pan', { length: 50 }),
   addhar: varchar('addhar', { length: 50 }),
   uanNumber: varchar('uan_number', { length: 50 }),
+  esiNumber: varchar('esi_number', { length: 50 }),
   basicPay: numeric('basic_pay'),
   pfApplicable: boolean('pf_applicable').default(false),
   esiApplicable: boolean('esi_applicable').default(false),

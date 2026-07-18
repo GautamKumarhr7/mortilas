@@ -24,6 +24,7 @@ import { reimbursementRouter } from './hr/reimbursement.router.js';
 import { jobPostRouter } from './hr/job-post.router.js';
 import { applicantRouter } from './hr/applicant.router.js';
 import { leaveRouter } from './hr/leave.router.js';
+import { complianceRouter } from './hr/compliance.router.js';
 
 const router = Router();
 
@@ -52,5 +53,6 @@ router.use('/payrolls', payrollRouter);
 router.use('/reimbursements', reimbursementRouter);
 router.use('/job-posts', jobPostRouter);
 router.use('/applicants', applicantRouter);
+router.use('/compliance', complianceRouter);
 
 export { router as apiRouter };
