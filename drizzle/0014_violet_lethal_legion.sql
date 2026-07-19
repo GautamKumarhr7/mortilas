@@ -1,7 +1,7 @@
-CREATE TYPE "public"."material_indent_item_status" AS ENUM('Pending', 'Approved', 'PO Generated', 'Rejected');--> statement-breakpoint
-CREATE TYPE "public"."material_indent_status" AS ENUM('Pending', 'Approved', 'Rejected', 'PO Created', 'Partially Received', 'Received');--> statement-breakpoint
-CREATE TYPE "public"."purchase_order_status" AS ENUM('Draft', 'Pending Approval', 'Approved', 'Rejected', 'Sent to Vendor', 'Accepted by Vendor', 'Partially Delivered', 'Fully Delivered', 'Closed');--> statement-breakpoint
-CREATE TYPE "public"."grn_status" AS ENUM('Draft', 'Pending Quality Check', 'Accepted', 'Rejected', 'Partially Accepted');--> statement-breakpoint
+-- CREATE TYPE "public"."material_indent_item_status" AS ENUM('Pending', 'Approved', 'PO Generated', 'Rejected');--> statement-breakpoint
+-- CREATE TYPE "public"."material_indent_status" AS ENUM('Pending', 'Approved', 'Rejected', 'PO Created', 'Partially Received', 'Received');--> statement-breakpoint
+-- CREATE TYPE "public"."purchase_order_status" AS ENUM('Draft', 'Pending Approval', 'Approved', 'Rejected', 'Sent to Vendor', 'Accepted by Vendor', 'Partially Delivered', 'Fully Delivered', 'Closed');--> statement-breakpoint
+-- CREATE TYPE "public"."grn_status" AS ENUM('Draft', 'Pending Quality Check', 'Accepted', 'Rejected', 'Partially Accepted');--> statement-breakpoint
 CREATE TABLE "material_indents" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"indent_no" varchar(255) NOT NULL,

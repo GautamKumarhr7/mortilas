@@ -6,7 +6,8 @@ import {
   timestamp,
   pgEnum,
   numeric,
-  text
+  text,
+  uuid
 } from 'drizzle-orm/pg-core';
 import { materialIndents } from './material-indent.model.js';
 import { vendors } from '../vendor.model.js';
@@ -19,7 +20,7 @@ export const purchaseOrders = pgTable('purchase_orders', {
   id: serial('id').primaryKey(),
   poNo: varchar('po_no', { length: 255 }).notNull().unique(),
   indentId: integer('indent_id').references(() => materialIndents.id),
-  vendorId: integer('vendor_id').references(() => vendors.id),
+  vendorId: uuid('vendor_id').references(() => vendors.id),
   projectId: integer('project_id').references(() => projects.id),
   totalValue: numeric('total_value', { precision: 14, scale: 2 }).default('0'),
   status: purchaseOrderStatusEnum('status').notNull().default('Draft'),
