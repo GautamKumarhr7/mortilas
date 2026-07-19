@@ -1,9 +1,9 @@
-const WORK_ORDER_CODE_PATTERN = /^WO-\d{5}$/;
+const WORK_ORDER_CODE_PATTERN = /^WO-[A-Z0-9-]+$/i;
 
 export const normalizeWorkOrderNo = (workOrderNo: string): string => {
   const normalizedWorkOrderNo = workOrderNo.toUpperCase();
   if (!WORK_ORDER_CODE_PATTERN.test(normalizedWorkOrderNo)) {
-    throw new Error('Work order number format is invalid. Expected format: WO-00012');
+    throw new Error('Work order number format is invalid. Expected format: WO-MECPL-ELEC-2026-001 or WO-00012');
   }
 
   return normalizedWorkOrderNo;
