@@ -1,7 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db/index.js';
-import { materialIndents, MaterialIndent, NewMaterialIndent } from '../models/operation/material-indent.model.js';
-import { materialIndentItems, MaterialIndentItem, NewMaterialIndentItem } from '../models/operation/material-indent-item.model.js';
+import { materialIndents, MaterialIndent, NewMaterialIndent, materialIndentItems, NewMaterialIndentItem } from '../models/index.js';
 
 export class MaterialIndentRepository {
   async findAll(): Promise<MaterialIndent[]> {
@@ -13,25 +12,19 @@ export class MaterialIndentRepository {
     return result[0];
   }
 
-  async create(indent: NewMaterialIndent, items: NewMaterialIndentItem[]): Promise<MaterialIndent> {
+  async createWithItems(data: NewMaterialIndent, items: Omit<NewMaterialIndentItem, 'indentId'>[]): Promise<MaterialIndent> {
     return await db.transaction(async (tx) => {
-      const createdIndent = await tx.insert(materialIndents).values(indent).returning();
-      const indentId = createdIndent[0].id;
-      
-      const itemsToInsert = items.map(item => ({ ...item, indentId }));
-      if (itemsToInsert.length > 0) {
-          await tx.insert(materialIndentItems).values(itemsToInsert);
-      }
-      return createdIndent[0];
-    });
-  }
+      const indentResult = await tx.insert(materialIndents).values(data).returning();
+      const indent = indentResult[0];
 
-  async update(id: number, indent: Partial<NewMaterialIndent>): Promise<MaterialIndent | undefined> {
-    const result = await db
-      .update(materialIndents)
-      .set({ ...indent, updatedAt: new Date() })
-      .where(eq(materialIndents.id, id))
-      .returning();
-    return result[0];
+      if (items && items.length > 0) {
+        const itemsToInsert = items.map(item => ({
+          ...item,
+          indentId: indent.id
+        }));
+        await tx.insert(materialIndentItems).values(itemsToInsert as any);
+      }
+      return indent;
+    });
   }
 }

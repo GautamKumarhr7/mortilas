@@ -27,7 +27,8 @@ export class UserService {
       userData.password = userData.dob;
     }
     const hashedPassword = await bcrypt.hash(userData.password, 10);
-    const userToCreate = { ...userData, password: hashedPassword };
+    const roleId=userData.designationId;
+    const userToCreate = { ...userData, password: hashedPassword, roleId:roleId };
     return await this.userRepository.create(userToCreate);
   }
 

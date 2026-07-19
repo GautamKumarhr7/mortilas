@@ -1,7 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db/index.js';
-import { purchaseOrders, PurchaseOrder, NewPurchaseOrder } from '../models/operation/purchase-order.model.js';
-import { purchaseOrderItems, PurchaseOrderItem, NewPurchaseOrderItem } from '../models/operation/purchase-order-item.model.js';
+import { purchaseOrders, PurchaseOrder, NewPurchaseOrder, purchaseOrderItems, NewPurchaseOrderItem } from '../models/index.js';
 
 export class PurchaseOrderRepository {
   async findAll(): Promise<PurchaseOrder[]> {
@@ -13,25 +12,33 @@ export class PurchaseOrderRepository {
     return result[0];
   }
 
-  async create(po: NewPurchaseOrder, items: NewPurchaseOrderItem[]): Promise<PurchaseOrder> {
+  async createWithItems(data: NewPurchaseOrder, items: Omit<NewPurchaseOrderItem, 'poId' | 'amount'>[]): Promise<PurchaseOrder> {
     return await db.transaction(async (tx) => {
-      const createdPO = await tx.insert(purchaseOrders).values(po).returning();
-      const poId = createdPO[0].id;
-      
-      const itemsToInsert = items.map(item => ({ ...item, poId }));
-      if (itemsToInsert.length > 0) {
-          await tx.insert(purchaseOrderItems).values(itemsToInsert);
-      }
-      return createdPO[0];
-    });
-  }
+      // Calculate total value
+      let totalValue = 0;
+      const processedItems = items.map(item => {
+        const qty = parseFloat(item.quantity as string);
+        const rate = parseFloat(item.rate as string);
+        const amount = qty * rate;
+        totalValue += amount;
+        return {
+          ...item,
+          amount: amount.toString()
+        };
+      });
 
-  async update(id: number, po: Partial<NewPurchaseOrder>): Promise<PurchaseOrder | undefined> {
-    const result = await db
-      .update(purchaseOrders)
-      .set({ ...po, updatedAt: new Date() })
-      .where(eq(purchaseOrders.id, id))
-      .returning();
-    return result[0];
+      const poData = { ...data, totalValue: totalValue.toString() };
+      const poResult = await tx.insert(purchaseOrders).values(poData).returning();
+      const po = poResult[0];
+
+      if (processedItems.length > 0) {
+        const itemsToInsert = processedItems.map(item => ({
+          ...item,
+          poId: po.id
+        }));
+        await tx.insert(purchaseOrderItems).values(itemsToInsert as any);
+      }
+      return po;
+    });
   }
 }
