@@ -63,6 +63,6 @@ export class ProcurementService {
         indentData.indentNo = `IND-${Date.now()}`;
     }
 
-    return await this.indentRepo.create(indentData as NewMaterialIndent, processedItems);
+    return await this.indentRepo.createWithItems(indentData as NewMaterialIndent, processedItems);
   }
 }

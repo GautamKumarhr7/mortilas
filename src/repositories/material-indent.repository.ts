@@ -20,7 +20,11 @@ export class MaterialIndentRepository {
       if (items && items.length > 0) {
         const itemsToInsert = items.map(item => ({
           ...item,
-          indentId: indent.id
+          indentId: indent.id,
+          workOrderId: indent.workOrderId,
+          availableQty: (item as any).availableQty ?? '0',
+          shortageQty: (item as any).shortageQty ?? item.requiredQty?.toString() ?? '0',
+          requiredQty: item.requiredQty?.toString() ?? '0'
         }));
         await tx.insert(materialIndentItems).values(itemsToInsert as any);
       }
