@@ -10,31 +10,31 @@ const vendorController = new VendorController();
 router.get(
   '/',
   authenticate,
-  authorize('VENDOR', 'READ'),
+  authorize('VM', 'READ'),
   asyncWrapper(vendorController.getAllVendors),
 );
 router.get(
   '/:id',
   authenticate,
-  authorize('VENDOR', 'READ'),
+  authorize('VM', 'READ'),
   asyncWrapper(vendorController.getVendorById),
 );
 router.post(
   '/',
   authenticate,
-  authorize('VENDOR', 'CREATE'),
+  authorize('VM', 'CREATE'),
   asyncWrapper(vendorController.createVendor),
 );
 router.put(
   '/:id',
   authenticate,
-  authorize('VENDOR', 'UPDATE'),
+  authorize('VM', 'UPDATE'),
   asyncWrapper(vendorController.updateVendor),
 );
 router.delete(
   '/:id',
   authenticate,
-  authorize('VENDOR', 'DELETE'),
+  authorize('VM', 'DELETE'),
   asyncWrapper(vendorController.deleteVendor),
 );
 
@@ -42,19 +42,19 @@ router.delete(
 router.get(
   '/:id/rate-contracts',
   authenticate,
-  authorize('VENDOR', 'READ'),
+  authorize('VM', 'READ'),
   asyncWrapper(vendorController.getRateContracts),
 );
 router.post(
   '/:id/rate-contracts',
   authenticate,
-  authorize('VENDOR', 'CREATE'),
+  authorize('VM', 'CREATE'),
   asyncWrapper(vendorController.createRateContract),
 );
 router.put(
   '/:id/rate-contracts/:contractId',
   authenticate,
-  authorize('VENDOR', 'UPDATE'),
+  authorize('VM', 'UPDATE'),
   asyncWrapper(vendorController.updateRateContract),
 );
 
