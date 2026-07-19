@@ -15,7 +15,6 @@ export const rolePermissions = pgTable('role_permissions', {
   permissionId: integer('permission_id')
     .notNull()
     .references(() => permissions.id, { onDelete: 'cascade' }),
-
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
