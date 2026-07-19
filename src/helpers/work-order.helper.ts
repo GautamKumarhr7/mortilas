@@ -9,16 +9,19 @@ export const normalizeWorkOrderNo = (workOrderNo: string): string => {
   return normalizedWorkOrderNo;
 };
 
-export const generateWorkOrderNo = (existingWorkOrderNos: string[]): string => {
+export const generateWorkOrderNo = (baseCode: string, existingWorkOrderNos: string[]): string => {
   let maxSequence = 0;
 
   for (const workOrderNo of existingWorkOrderNos) {
-    const suffix = workOrderNo.slice(3);
-    const sequence = Number.parseInt(suffix, 10);
-    if (!Number.isNaN(sequence)) {
-      maxSequence = Math.max(maxSequence, sequence);
+    if (workOrderNo.startsWith(baseCode)) {
+      const parts = workOrderNo.split('-');
+      const suffix = parts[parts.length - 1];
+      const sequence = Number.parseInt(suffix, 10);
+      if (!Number.isNaN(sequence)) {
+        maxSequence = Math.max(maxSequence, sequence);
+      }
     }
   }
 
-  return `WO-${String(maxSequence + 1).padStart(5, '0')}`;
+  return `${baseCode}-${String(maxSequence + 1).padStart(3, '0')}`;
 };

@@ -22,9 +22,19 @@ export class WorkOrderService {
       throw new Error('Project is required');
     }
 
-    const workOrderNo = workOrderData.workOrderNo
+    const baseWorkOrderNo = workOrderData.workOrderNo
       ? normalizeWorkOrderNo(workOrderData.workOrderNo)
-      : generateWorkOrderNo(await this.workOrderRepository.findWorkOrderNosByPrefix('WO-'));
+      : 'WO';
+
+    let workOrderNo = baseWorkOrderNo;
+    const hasSequenceSuffix = /-\d{3}$/.test(baseWorkOrderNo);
+    
+    if (!hasSequenceSuffix) {
+        workOrderNo = generateWorkOrderNo(
+            baseWorkOrderNo, 
+            await this.workOrderRepository.findWorkOrderNosByPrefix(baseWorkOrderNo)
+        );
+    }
 
     const existingWorkOrder = await this.workOrderRepository.findByWorkOrderNo(workOrderNo);
     if (existingWorkOrder) {

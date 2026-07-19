@@ -9,6 +9,7 @@ import {
   pgEnum,
   text,
   jsonb,
+  uuid,
 } from 'drizzle-orm/pg-core';
 import { projects } from './project.model.js';
 import { users } from '../hr/user.model.js';
@@ -23,7 +24,7 @@ export const workOrders = pgTable('work_orders', {
   workOrderNo: varchar('work_order_no', { length: 255 }).notNull().unique(),
   title: varchar('title', { length: 255 }).notNull(),
   description: text('description'),
-  subcontractorId: integer('subcontractor_id'),
+  subcontractorId: uuid('subcontractor_id'),
   estimatedCost: numeric('estimated_cost', { precision: 14, scale: 2 }),
   startDate: date('start_date'),
   endDate: date('end_date'),

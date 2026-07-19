@@ -1,15 +1,47 @@
 import { eq, like } from 'drizzle-orm';
 import { db } from '../db/index.js';
 import { workOrders, WorkOrder, NewWorkOrder } from '../models/projectMaster/work-order.model.js';
+import { projects } from '../models/projectMaster/project.model.js';
+import { subcontractors } from '../models/operation/subcontractor.model.js';
 
 export class WorkOrderRepository {
-  async findAll(): Promise<WorkOrder[]> {
-    return await db.select().from(workOrders);
+  async findAll(): Promise<any[]> {
+    const result = await db
+      .select({
+        workOrder: workOrders,
+        projectCode: projects.projectCode,
+        subcontractorName: subcontractors.companyName,
+      })
+      .from(workOrders)
+      .leftJoin(projects, eq(workOrders.projectId, projects.id))
+      .leftJoin(subcontractors, eq(workOrders.subcontractorId, subcontractors.id));
+
+    return result.map(row => ({
+      ...row.workOrder,
+      projectCode: row.projectCode,
+      subcontractorName: row.subcontractorName,
+    }));
   }
 
-  async findById(id: number): Promise<WorkOrder | undefined> {
-    const result = await db.select().from(workOrders).where(eq(workOrders.id, id));
-    return result[0];
+  async findById(id: number): Promise<any | undefined> {
+    const result = await db
+      .select({
+        workOrder: workOrders,
+        projectCode: projects.projectCode,
+        subcontractorName: subcontractors.companyName,
+      })
+      .from(workOrders)
+      .leftJoin(projects, eq(workOrders.projectId, projects.id))
+      .leftJoin(subcontractors, eq(workOrders.subcontractorId, subcontractors.id))
+      .where(eq(workOrders.id, id));
+
+    if (!result.length) return undefined;
+
+    return {
+      ...result[0].workOrder,
+      projectCode: result[0].projectCode,
+      subcontractorName: result[0].subcontractorName,
+    };
   }
 
   async findByWorkOrderNo(workOrderNo: string): Promise<WorkOrder | undefined> {

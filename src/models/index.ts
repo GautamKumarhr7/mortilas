@@ -21,3 +21,8 @@ export * from './hr/payroll.model.js';
 export * from './hr/reimbursement.model.js';
 export * from './hr/job-post.model.js';
 export * from './hr/applicant.model.js';
+export * from './operation/material-indent.model.js';
+export * from './operation/purchase-order.model.js';
+export * from './operation/purchase-order-item.model.js';
+export * from './operation/grn.model.js';
+export * from './operation/grn-item.model.js';
