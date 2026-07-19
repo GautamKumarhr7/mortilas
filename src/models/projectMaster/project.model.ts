@@ -8,6 +8,7 @@ import {
   date,
   text,
   pgEnum,
+  jsonb,
 } from 'drizzle-orm/pg-core';
 import { clients } from '../client.model.js';
 
@@ -47,9 +48,14 @@ export const projects = pgTable('projects', {
   plannedEnd: date('planned_end'),
   actualStart: date('actual_start'),
   actualEnd: date('actual_end'),
+  revisedEnd: date('revised_end'),
+  advancePayment: numeric('advance_payment', { precision: 14, scale: 2 }),
+  retentionPercentage: numeric('retention_percentage', { precision: 5, scale: 2 }),
+  paymentTerms: text('payment_terms'),
   process: varchar('process', { length: 255 }),
   status: projectStatusEnum('status').notNull().default('Draft'),
   notes: text('notes'),
+  documents: jsonb('documents').default('[]'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });

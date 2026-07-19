@@ -8,6 +8,7 @@ import {
   numeric,
   pgEnum,
   text,
+  jsonb,
 } from 'drizzle-orm/pg-core';
 import { projects } from './project.model.js';
 import { users } from '../hr/user.model.js';
@@ -29,6 +30,11 @@ export const workOrders = pgTable('work_orders', {
   progress: integer('progress'),
   status: workOrderStatusEnum('status').notNull().default('pending'),
   approvedBy: integer('approved_by').references(() => users.id),
+  paymentTerms: text('payment_terms'),
+  boqItems: jsonb('boq_items').default('[]'),
+  materialRequisitions: jsonb('material_requisitions').default('[]'),
+  billingMilestones: jsonb('billing_milestones').default('[]'),
+  approvals: jsonb('approvals').default('{"siteEngineer": false, "projectManager": false, "departmentHead": false}'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
