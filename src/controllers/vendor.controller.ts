@@ -47,4 +47,23 @@ export class VendorController {
     }
     res.status(200).json({ success: true, message: 'Vendor deleted' });
   };
+
+  // Rate Contracts
+  getRateContracts = async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id as string;
+    const contracts = await this.vendorService.getRateContracts(id);
+    res.status(200).json({ success: true, data: contracts });
+  };
+
+  createRateContract = async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id as string;
+    const contract = await this.vendorService.createRateContract(id, req.body);
+    res.status(201).json({ success: true, data: contract });
+  };
+
+  updateRateContract = async (req: Request, res: Response, next: NextFunction) => {
+    const contractId = parseInt(req.params.contractId as string, 10);
+    const contract = await this.vendorService.updateRateContract(contractId, req.body);
+    res.status(200).json({ success: true, data: contract });
+  };
 }

@@ -26,3 +26,4 @@ export * from './operation/purchase-order.model.js';
 export * from './operation/purchase-order-item.model.js';
 export * from './operation/grn.model.js';
 export * from './operation/grn-item.model.js';
+export * from './operation/equipment.model.js';

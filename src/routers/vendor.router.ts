@@ -38,4 +38,24 @@ router.delete(
   asyncWrapper(vendorController.deleteVendor),
 );
 
+// Rate Contracts
+router.get(
+  '/:id/rate-contracts',
+  authenticate,
+  authorize('VENDOR', 'READ'),
+  asyncWrapper(vendorController.getRateContracts),
+);
+router.post(
+  '/:id/rate-contracts',
+  authenticate,
+  authorize('VENDOR', 'CREATE'),
+  asyncWrapper(vendorController.createRateContract),
+);
+router.put(
+  '/:id/rate-contracts/:contractId',
+  authenticate,
+  authorize('VENDOR', 'UPDATE'),
+  asyncWrapper(vendorController.updateRateContract),
+);
+
 export { router as vendorRouter };

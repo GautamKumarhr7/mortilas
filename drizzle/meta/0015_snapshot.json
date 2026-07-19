@@ -1,6 +1,6 @@
 {
-  "id": "9fa794bf-49ff-47b1-b2c8-d228451d1169",
-  "prevId": "f84d25a6-f46e-4850-8284-527bdb4f37cb",
+  "id": "ef280f66-839b-45de-a1d7-47daccbb208b",
+  "prevId": "9fa794bf-49ff-47b1-b2c8-d228451d1169",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -3961,7 +3961,7 @@
         },
         "vendor_id": {
           "name": "vendor_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },

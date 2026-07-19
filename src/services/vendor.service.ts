@@ -14,7 +14,7 @@ export class VendorService {
     this.vendorRepository = new VendorRepository();
   }
 
-  async getAllVendors(): Promise<Vendor[]> {
+  async getAllVendors(): Promise<any[]> {
     return await this.vendorRepository.findAll();
   }
 
@@ -66,5 +66,21 @@ export class VendorService {
 
   async deleteVendor(id: string): Promise<Vendor | undefined> {
     return await this.vendorRepository.delete(id);
+  }
+
+  // Rate Contracts
+  async getRateContracts(vendorId: string) {
+    return await this.vendorRepository.findRateContractsByVendor(vendorId);
+  }
+
+  async createRateContract(vendorId: string, rateContractData: any) {
+    return await this.vendorRepository.createRateContract({
+      ...rateContractData,
+      vendorId,
+    });
+  }
+
+  async updateRateContract(id: number, rateContractData: any) {
+    return await this.vendorRepository.updateRateContract(id, rateContractData);
   }
 }

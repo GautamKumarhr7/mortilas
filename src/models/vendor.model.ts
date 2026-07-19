@@ -6,8 +6,10 @@ import {
   text,
   boolean,
   numeric,
+  integer,
   pgEnum,
 } from 'drizzle-orm/pg-core';
+import { vendorCategories } from './vendor-category.model.js';
 
 export const vendorTypeEnum = pgEnum('vendor_type', ['Material', 'Equipment', 'Service', 'Rental']);
 export const vendorStatusEnum = pgEnum('vendor_status', ['Active', 'Inactive', 'Blacklisted']);
@@ -15,6 +17,7 @@ export const vendorStatusEnum = pgEnum('vendor_status', ['Active', 'Inactive', '
 export const vendors = pgTable('vendors', {
   id: uuid('id').primaryKey(),
   vendorCode: varchar('vendor_code', { length: 255 }).notNull().unique(),
+  categoryId: integer('category_id').references(() => vendorCategories.id),
   companyName: varchar('company_name', { length: 255 }).notNull(),
   vendorType: vendorTypeEnum('vendor_type').notNull(),
   contactPerson: varchar('contact_person', { length: 255 }).notNull(),
@@ -29,6 +32,7 @@ export const vendors = pgTable('vendors', {
   gstNo: varchar('gst_no', { length: 255 }).notNull(),
   panNo: varchar('pan_no', { length: 255 }).notNull(),
   msmeNo: varchar('msme_no', { length: 255 }),
+  isoNo: varchar('iso_no', { length: 255 }),
   electricalLicense: varchar('electrical_license', { length: 255 }),
   epfNo: varchar('epf_no', { length: 255 }),
   esiNo: varchar('esi_no', { length: 255 }),

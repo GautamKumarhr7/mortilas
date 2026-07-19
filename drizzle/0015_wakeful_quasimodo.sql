@@ -1,0 +1,1 @@
+ALTER TABLE "equipments" ALTER COLUMN "vendor_id" SET DATA TYPE uuid;
