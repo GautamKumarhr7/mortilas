@@ -1,4 +1,4 @@
-import { ReimbursementRepository } from '../../repositories/reimbursement.repository.js';
+import { ReimbursementRepository } from '../../repositories/hr/reimbursement.repository.js';
 import { Reimbursement, NewReimbursement } from '../../models/hr/reimbursement.model.js';
 
 export class ReimbursementService {

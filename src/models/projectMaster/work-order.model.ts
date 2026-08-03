@@ -12,6 +12,7 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 import { projects } from './project.model.js';
+import { sites } from './site.model.js';
 import { users } from '../hr/user.model.js';
 
 export const workOrderStatusEnum = pgEnum('work_order_status', ['pending', 'rejected', 'approved']);
@@ -21,6 +22,7 @@ export const workOrders = pgTable('work_orders', {
   projectId: integer('project_id')
     .notNull()
     .references(() => projects.id),
+  siteId: integer('site_id').references(() => sites.id),
   workOrderNo: varchar('work_order_no', { length: 255 }).notNull().unique(),
   title: varchar('title', { length: 255 }).notNull(),
   description: text('description'),

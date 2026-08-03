@@ -1,4 +1,4 @@
-import { ModuleRepository } from '../../repositories/module.repository.js';
+import { ModuleRepository } from '../../repositories/authority/module.repository.js';
 import { Module, NewModule } from '../../models/index.js';
 
 export class ModuleService {

@@ -1,4 +1,4 @@
-import { SubcontractorRepository } from '../../repositories/subcontractor.repository.js';
+import { SubcontractorRepository } from '../../repositories/operation/subcontractor.repository.js';
 import { Subcontractor, NewSubcontractor } from '../../models/operation/subcontractor.model.js';
 import {
   generateSequentialCode,

@@ -1,4 +1,4 @@
-import { EmployeeRepository } from '../../repositories/employee.repository.js';
+import { EmployeeRepository } from '../../repositories/hr/employee.repository.js';
 import { Employee, NewEmployee } from '../../models/hr/employee.model.js';
 
 export class EmployeeService {

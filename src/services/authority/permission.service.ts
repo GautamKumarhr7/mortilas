@@ -1,4 +1,4 @@
-import { PermissionRepository } from '../../repositories/permission.repository.js';
+import { PermissionRepository } from '../../repositories/authority/permission.repository.js';
 import { Permission, NewPermission } from '../../models/index.js';
 
 export class PermissionService {

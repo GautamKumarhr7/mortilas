@@ -1,0 +1,1 @@
+ALTER TABLE "po_bids" ADD COLUMN "material_average_prices" jsonb NOT NULL DEFAULT '[]';

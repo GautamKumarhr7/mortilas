@@ -1,6 +1,6 @@
-import { ApplicantRepository } from '../../repositories/applicant.repository.js';
-import { EmployeeRepository } from '../../repositories/employee.repository.js';
-import { JobPostRepository } from '../../repositories/job-post.repository.js';
+import { ApplicantRepository } from '../../repositories/hr/applicant.repository.js';
+import { EmployeeRepository } from '../../repositories/hr/employee.repository.js';
+import { JobPostRepository } from '../../repositories/hr/job-post.repository.js';
 import { Applicant, NewApplicant } from '../../models/hr/applicant.model.js';
 import bcrypt from 'bcrypt';
 

@@ -340,6 +340,125 @@ This file collects example create request bodies for the CRUD APIs added today.
 }
 ```
 
+## 18. Purchase Order Procurement Flow
+
+This is the end-to-end flow for PO approval, vendor bidding, bid award, delivery tracking, GRN, and finance handoff.
+
+1. Employee creates a PO in draft state.
+
+**Endpoint**: `POST /api/purchase-orders`
+
+```json
+{
+  "vendorId": "d7b5c5d0-9f84-4a31-bb91-1c3d0c5a7a22",
+  "indentId": 14,
+  "projectId": 3,
+  "items": [
+    {
+      "itemId": 18,
+      "quantity": 100,
+      "rate": 820,
+      "approvedMake": "L&T"
+    }
+  ]
+}
+```
+
+2. PO is approved by the employee/approver.
+
+**Endpoint**: `PATCH /api/purchase-orders/:id/approve`
+
+```json
+{
+  "approvedBy": 1
+}
+```
+
+3. Approved PO becomes visible to vendors and vendors submit bids.
+
+**Endpoint**: `POST /api/po-bids`
+
+```json
+{
+  "poId": 101,
+  "vendorId": "d7b5c5d0-9f84-4a31-bb91-1c3d0c5a7a22",
+  "amount": 78500
+}
+```
+
+4. Vendor compare shows all bids for the PO in ascending order of price.
+
+**Endpoint**: `GET /api/po-bids/po/:poId`
+
+5. Employee selects the winning bid and closes bid generation for that PO.
+
+**Endpoint**: `PATCH /api/po-bids/:id/win`
+
+```json
+{}
+```
+
+6. Winning vendor updates delivery progress.
+
+**Endpoint**: `PATCH /api/purchase-orders/:id/delivery-status`
+
+```json
+{
+  "deliveryStatus": "Packaging"
+}
+```
+
+```json
+{
+  "deliveryStatus": "Dispatched",
+  "dispatchDate": "2026-08-15T10:00:00Z"
+}
+```
+
+```json
+{
+  "deliveryStatus": "Arrived",
+  "arrivalTime": "2026-08-16T14:30:00Z"
+}
+```
+
+7. Employee generates GRN after receipt. The GRN should carry PO details, material details, vendor details, average bid price, total price, and vendor rating per material.
+
+**Modeled tables**: `grns`, `grn_items`
+
+**Endpoint**: `POST /api/grns/from-po`
+
+```json
+{
+  "poId": 101,
+  "receivedDate": "2026-08-16T14:30:00Z",
+  "storeManagerId": 5,
+  "items": [
+    {
+      "poItemId": 501,
+      "itemId": 18,
+      "receivedQty": 100,
+      "acceptedQty": 98,
+      "rejectedQty": 2,
+      "qualityStatus": "Accepted",
+      "employeeRating": 5
+    }
+  ]
+}
+```
+
+8. Finance receives the GRN and initiates payment.
+
+**Process note**: payment initiation is the next departmental step after GRN approval.
+
+**Endpoint**: `PATCH /api/grns/:id/initiate-payment`
+
+```json
+{
+  "financeUserId": 12
+}
+```
+
 ## Notes
 
 - Example IDs are placeholders and should be replaced with real database IDs.

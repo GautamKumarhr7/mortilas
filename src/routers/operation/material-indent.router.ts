@@ -8,5 +8,7 @@ const materialIndentController = new MaterialIndentController();
 
 router.get('/', authenticate, asyncWrapper(materialIndentController.getAllMaterialIndents));
 router.post('/', authenticate, asyncWrapper(materialIndentController.createMaterialIndent));
+router.put('/:id', authenticate, asyncWrapper(materialIndentController.updateMaterialIndent));
+router.delete('/:id', authenticate, asyncWrapper(materialIndentController.deleteMaterialIndent));
 
 export { router as materialIndentRouter };

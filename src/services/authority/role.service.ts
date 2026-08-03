@@ -1,4 +1,4 @@
-import { RoleRepository } from '../../repositories/role.repository.js';
+import { RoleRepository } from '../../repositories/authority/role.repository.js';
 import { Role, NewRole } from '../../models/index.js';
 
 export class RoleService {

@@ -1,4 +1,4 @@
-import { SubModuleRepository } from '../../repositories/submodule.repository.js';
+import { SubModuleRepository } from '../../repositories/authority/submodule.repository.js';
 import { SubModule, NewSubModule } from '../../models/index.js';
 
 export class SubModuleService {

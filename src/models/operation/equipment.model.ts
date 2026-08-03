@@ -1,6 +1,6 @@
 import { pgTable, serial, varchar, timestamp, decimal, jsonb, boolean, text, date, uuid, integer } from 'drizzle-orm/pg-core';
 import { projects } from '../projectMaster/project.model.js';
-import { vendors } from '../vendor.model.js';
+import { vendors } from '../businessDevelopment/vendor.model.js';
 
 export const equipments = pgTable('equipments', {
   id: uuid('id').primaryKey().defaultRandom(),

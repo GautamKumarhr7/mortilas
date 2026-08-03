@@ -1,4 +1,4 @@
-import { JobPostRepository } from '../../repositories/job-post.repository.js';
+import { JobPostRepository } from '../../repositories/hr/job-post.repository.js';
 import { JobPost, NewJobPost } from '../../models/hr/job-post.model.js';
 
 export class JobPostService {

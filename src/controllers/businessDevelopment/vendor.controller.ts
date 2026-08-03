@@ -1,0 +1,78 @@
+import { Request, Response, NextFunction } from 'express';
+import { VendorService } from '../../services/businessDevelopment/vendor.service.js';
+
+const excludePassword = (vendor: any) => {
+  if (!vendor) return vendor;
+  const { password, ...rest } = vendor;
+  return rest;
+};
+
+export class VendorController {
+  private vendorService: VendorService;
+
+  constructor() {
+    this.vendorService = new VendorService();
+  }
+
+  getAllVendors = async (req: Request, res: Response, next: NextFunction) => {
+    const vendors = await this.vendorService.getAllVendors();
+    res.status(200).json({ success: true, data: vendors.map((v: any) => ({
+      ...v,
+      vendor: excludePassword(v.vendor),
+    })) });
+  };
+
+  getVendorById = async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id as string;
+    const vendor = await this.vendorService.getVendorById(id);
+    if (!vendor) {
+      res.status(404).json({ success: false, message: 'Vendor not found' });
+      return;
+    }
+    res.status(200).json({ success: true, data: excludePassword(vendor) });
+  };
+
+  createVendor = async (req: Request, res: Response, next: NextFunction) => {
+    const vendor = await this.vendorService.createVendor(req.body);
+    res.status(201).json({ success: true, data: excludePassword(vendor) });
+  };
+
+  updateVendor = async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id as string;
+    const vendor = await this.vendorService.updateVendor(id, req.body);
+    if (!vendor) {
+      res.status(404).json({ success: false, message: 'Vendor not found' });
+      return;
+    }
+    res.status(200).json({ success: true, data: excludePassword(vendor) });
+  };
+
+  deleteVendor = async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id as string;
+    const vendor = await this.vendorService.deleteVendor(id);
+    if (!vendor) {
+      res.status(404).json({ success: false, message: 'Vendor not found' });
+      return;
+    }
+    res.status(200).json({ success: true, message: 'Vendor deleted' });
+  };
+
+  // Rate Contracts
+  getRateContracts = async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id as string;
+    const contracts = await this.vendorService.getRateContracts(id);
+    res.status(200).json({ success: true, data: contracts });
+  };
+
+  createRateContract = async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id as string;
+    const contract = await this.vendorService.createRateContract(id, req.body);
+    res.status(201).json({ success: true, data: contract });
+  };
+
+  updateRateContract = async (req: Request, res: Response, next: NextFunction) => {
+    const contractId = parseInt(req.params.contractId as string, 10);
+    const contract = await this.vendorService.updateRateContract(contractId, req.body);
+    res.status(200).json({ success: true, data: contract });
+  };
+}

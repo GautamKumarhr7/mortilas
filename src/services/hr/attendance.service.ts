@@ -1,4 +1,4 @@
-import { AttendanceRepository } from '../../repositories/attendance.repository.js';
+import { AttendanceRepository } from '../../repositories/hr/attendance.repository.js';
 import { Attendance, NewAttendance, NewAttendanceLog } from '../../models/hr/attendance.model.js';
 
 export class AttendanceService {

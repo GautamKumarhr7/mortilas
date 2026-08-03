@@ -1,4 +1,4 @@
-import { UserRepository } from '../../repositories/user.repository.js';
+import { UserRepository } from '../../repositories/hr/user.repository.js';
 import { User, NewUser } from '../../models/hr/user.model.js';
 import bcrypt from 'bcrypt';
 

@@ -1,4 +1,4 @@
-import { EquipmentRepository } from '../../repositories/equipment.repository.js';
+import { EquipmentRepository } from '../../repositories/operation/equipment.repository.js';
 
 export class EquipmentService {
   private repository: EquipmentRepository;

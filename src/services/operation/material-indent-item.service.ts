@@ -1,4 +1,4 @@
-import { MaterialIndentItemRepository } from '../../repositories/material-indent-item.repository.js';
+import { MaterialIndentItemRepository } from '../../repositories/operation/material-indent-item.repository.js';
 import { MaterialIndentItem, NewMaterialIndentItem } from '../../models/operation/material-indent-item.model.js';
 
 export class MaterialIndentItemService {

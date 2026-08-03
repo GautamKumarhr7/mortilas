@@ -1,5 +1,5 @@
-import { MaterialIndentRepository } from '../../repositories/material-indent.repository.js';
-import { PurchaseOrderRepository } from '../../repositories/purchase-order.repository.js';
+import { MaterialIndentRepository } from '../../repositories/operation/material-indent.repository.js';
+import { PurchaseOrderRepository } from '../../repositories/operation/purchase-order.repository.js';
 import { db } from '../../db/index.js';
 import { inventories } from '../../models/inventory.model.js';
 import { eq } from 'drizzle-orm';

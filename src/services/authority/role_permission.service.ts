@@ -1,4 +1,4 @@
-import { RolePermissionRepository } from '../../repositories/role_permission.repository.js';
+import { RolePermissionRepository } from '../../repositories/authority/role_permission.repository.js';
 import { RolePermission, NewRolePermission } from '../../models/index.js';
 
 export class RolePermissionService {

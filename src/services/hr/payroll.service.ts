@@ -1,5 +1,5 @@
-import { PayrollRepository } from '../../repositories/payroll.repository.js';
-import { EmployeeRepository } from '../../repositories/employee.repository.js';
+import { PayrollRepository } from '../../repositories/hr/payroll.repository.js';
+import { EmployeeRepository } from '../../repositories/hr/employee.repository.js';
 import { Payroll, NewPayroll } from '../../models/hr/payroll.model.js';
 
 interface GeneratePayrollInput {

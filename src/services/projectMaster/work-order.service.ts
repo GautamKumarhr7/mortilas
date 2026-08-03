@@ -1,12 +1,15 @@
-import { WorkOrderRepository } from '../../repositories/work-order.repository.js';
+import { WorkOrderRepository } from '../../repositories/operation/work-order.repository.js';
+import { ProjectRepository } from '../../repositories/projectMaster/project.repository.js';
 import { WorkOrder, NewWorkOrder } from '../../models/projectMaster/work-order.model.js';
-import { generateWorkOrderNo, normalizeWorkOrderNo } from '../../helpers/work-order.helper.js';
+import { generateWorkOrderNo } from '../../helpers/work-order.helper.js';
 
 export class WorkOrderService {
   private workOrderRepository: WorkOrderRepository;
+  private projectRepository: ProjectRepository;
 
   constructor() {
     this.workOrderRepository = new WorkOrderRepository();
+    this.projectRepository = new ProjectRepository();
   }
 
   async getAllWorkOrders(): Promise<WorkOrder[]> {
@@ -22,24 +25,16 @@ export class WorkOrderService {
       throw new Error('Project is required');
     }
 
-    const baseWorkOrderNo = workOrderData.workOrderNo
-      ? normalizeWorkOrderNo(workOrderData.workOrderNo)
-      : 'WO';
-
-    let workOrderNo = baseWorkOrderNo;
-    const hasSequenceSuffix = /-\d{3}$/.test(baseWorkOrderNo);
-    
-    if (!hasSequenceSuffix) {
-        workOrderNo = generateWorkOrderNo(
-            baseWorkOrderNo, 
-            await this.workOrderRepository.findWorkOrderNosByPrefix(baseWorkOrderNo)
-        );
+    const project = await this.projectRepository.findById(workOrderData.projectId);
+    if (!project) {
+      throw new Error('Invalid project ID');
     }
 
-    const existingWorkOrder = await this.workOrderRepository.findByWorkOrderNo(workOrderNo);
-    if (existingWorkOrder) {
-      throw new Error('Work order with this number already exists');
-    }
+    const baseWorkOrderNo = `WO-${project.projectCode}`;
+    const workOrderNo = generateWorkOrderNo(
+      baseWorkOrderNo,
+      await this.workOrderRepository.findWorkOrderNosByPrefix(baseWorkOrderNo)
+    );
 
     const workOrderToCreate = {
       ...workOrderData,
@@ -54,21 +49,9 @@ export class WorkOrderService {
     id: number,
     workOrderData: Partial<NewWorkOrder>,
   ): Promise<WorkOrder | undefined> {
-    if (workOrderData.workOrderNo) {
-      const normalizedWorkOrderNo = normalizeWorkOrderNo(workOrderData.workOrderNo);
-      const existingWorkOrder =
-        await this.workOrderRepository.findByWorkOrderNo(normalizedWorkOrderNo);
-      if (existingWorkOrder && existingWorkOrder.id !== id) {
-        throw new Error('Work order with this number already exists');
-      }
-
-      return await this.workOrderRepository.update(id, {
-        ...workOrderData,
-        workOrderNo: normalizedWorkOrderNo,
-      });
-    }
-
-    return await this.workOrderRepository.update(id, workOrderData);
+    // We intentionally ignore workOrderNo updates as it's a fixed generated ID
+    const { workOrderNo, ...dataToUpdate } = workOrderData as any;
+    return await this.workOrderRepository.update(id, dataToUpdate);
   }
 
   async deleteWorkOrder(id: number): Promise<WorkOrder | undefined> {

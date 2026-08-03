@@ -1,5 +1,5 @@
-import { LeaveRequestRepository } from '../../repositories/leave-request.repository.js';
-import { LeaveRepository } from '../../repositories/leave.repository.js';
+import { LeaveRequestRepository } from '../../repositories/hr/leave-request.repository.js';
+import { LeaveRepository } from '../../repositories/hr/leave.repository.js';
 import { LeaveRequest, NewLeaveRequest } from '../../models/hr/leave-request.model.js';
 import { Leave } from '../../models/hr/leave.model.js';
 

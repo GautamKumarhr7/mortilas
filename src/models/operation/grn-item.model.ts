@@ -1,11 +1,4 @@
-import {
-  pgTable,
-  serial,
-  integer,
-  varchar,
-  timestamp,
-  numeric
-} from 'drizzle-orm/pg-core';
+import { pgTable, serial, integer, varchar, timestamp, numeric } from 'drizzle-orm/pg-core';
 import { grns } from './grn.model.js';
 import { purchaseOrderItems } from './purchase-order-item.model.js';
 import { inventories } from '../inventory.model.js';
@@ -24,7 +17,9 @@ export const grnItems = pgTable('grn_items', {
   receivedQty: numeric('received_qty', { precision: 14, scale: 2 }).notNull(),
   acceptedQty: numeric('accepted_qty', { precision: 14, scale: 2 }).default('0'),
   rejectedQty: numeric('rejected_qty', { precision: 14, scale: 2 }).default('0'),
+  averagePrice: numeric('average_price', { precision: 14, scale: 2 }).default('0'),
   qualityStatus: varchar('quality_status', { length: 255 }).default('Pending'),
+  employeeRating: integer('employee_rating').default(1),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });

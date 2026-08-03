@@ -12,6 +12,11 @@ export const authorize = (submoduleCode: string, permissionCode: string) => {
       return;
     }
 
+    if ((req as any).isVendor) {
+      // Allow vendors to pass authorization. Their frontend UI and backend router guards (if any) will restrict them.
+      return next();
+    }
+
     if (!req.user.roleId && !req.user.designationId) {
       res.status(403).json({ success: false, message: 'Forbidden: User has no assigned role' });
       return;

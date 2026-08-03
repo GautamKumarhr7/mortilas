@@ -1,4 +1,4 @@
-import { LeaveRepository } from '../../repositories/leave.repository.js';
+import { LeaveRepository } from '../../repositories/hr/leave.repository.js';
 import { Leave } from '../../models/hr/leave.model.js';
 
 export class LeaveService {

@@ -1,4 +1,4 @@
-import { ProjectRepository } from '../../repositories/project.repository.js';
+import { ProjectRepository } from '../../repositories/projectMaster/project.repository.js';
 import { Project, NewProject } from '../../models/projectMaster/project.model.js';
 import {
   buildProjectCodePrefix,

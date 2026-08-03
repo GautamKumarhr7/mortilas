@@ -1,0 +1,1 @@
+ALTER TABLE "grn_items" ADD COLUMN "average_price" numeric(14, 2) DEFAULT '0';

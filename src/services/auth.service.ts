@@ -1,21 +1,34 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { UserRepository } from '../repositories/user.repository.js';
+import { UserRepository } from '../repositories/hr/user.repository.js';
 import { User } from '../models/hr/user.model.js';
+import { VendorRepository } from '../repositories/businessDevelopment/vendor.repository.js';
 
 export class AuthService {
   private userRepository: UserRepository;
+  private vendorRepository: VendorRepository;
 
   constructor() {
     this.userRepository = new UserRepository();
+    this.vendorRepository = new VendorRepository();
   }
 
   async login(
     email: string,
     passwordString: string,
-  ): Promise<{ user: User; accessToken: string; refreshToken: string } | null> {
-    const user = await this.userRepository.findByEmail(email);
+  ): Promise<{ user: any; accessToken: string; refreshToken: string } | null> {
+    let accountType = 'employee';
+    let user: any = await this.userRepository.findByEmail(email);
+
     if (!user) {
+      user = await this.vendorRepository.findByEmail(email);
+      if (!user) {
+        return null;
+      }
+      accountType = 'vendor';
+    }
+
+    if (!user.password) {
       return null;
     }
 
@@ -24,14 +37,14 @@ export class AuthService {
       return null;
     }
 
-    const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET as string, {
+    const accessToken = jwt.sign({ userId: user.id, type: accountType }, process.env.JWT_SECRET as string, {
       expiresIn: '1d',
     });
-    const refreshToken = jwt.sign({ userId: user.id }, process.env.JWT_REFRESH_SECRET as string, {
+    const refreshToken = jwt.sign({ userId: user.id, type: accountType }, process.env.JWT_REFRESH_SECRET as string, {
       expiresIn: '7d',
     });
 
-    return { user, accessToken, refreshToken };
+    return { user: { ...user, accountType }, accessToken, refreshToken };
   }
 
   async register(data: any): Promise<User> {
@@ -57,15 +70,22 @@ export class AuthService {
   async refreshToken(token: string): Promise<{ accessToken: string } | null> {
     try {
       const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET as string) as {
-        userId: number;
+        userId: any;
+        type?: string;
       };
-      const user = await this.userRepository.findById(decoded.userId);
+      
+      let user: any = null;
+      if (decoded.type === 'vendor') {
+        user = await this.vendorRepository.findById(decoded.userId as string);
+      } else {
+        user = await this.userRepository.findById(decoded.userId as number);
+      }
 
       if (!user) {
         return null;
       }
 
-      const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET as string, {
+      const accessToken = jwt.sign({ userId: user.id, type: decoded.type || 'employee' }, process.env.JWT_SECRET as string, {
         expiresIn: '15m',
       });
       return { accessToken };

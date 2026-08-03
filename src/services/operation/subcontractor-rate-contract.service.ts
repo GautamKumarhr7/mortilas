@@ -1,4 +1,4 @@
-import { SubcontractorRateContractRepository } from '../../repositories/subcontractor-rate-contract.repository.js';
+import { SubcontractorRateContractRepository } from '../../repositories/operation/subcontractor-rate-contract.repository.js';
 import {
   SubcontractorRateContract,
   NewSubcontractorRateContract,

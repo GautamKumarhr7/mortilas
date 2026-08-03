@@ -113,6 +113,55 @@
       "when": 1784462815169,
       "tag": "0015_wakeful_quasimodo",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1785056166210,
+      "tag": "0016_melodic_stature",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1785056166211,
+      "tag": "0017_vendor_password",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1785056166212,
+      "tag": "0018_grn_enhancements",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1785056166213,
+      "tag": "0019_grn_payment_initiation",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1785056166214,
+      "tag": "0020_bid_material_average_prices",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1785056166215,
+      "tag": "0021_grn_item_average_price",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1785783150451,
+      "tag": "0022_smiling_selene",
+      "breakpoints": true
     }
   ]
 }
