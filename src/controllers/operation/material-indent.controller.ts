@@ -40,7 +40,7 @@ export class MaterialIndentController {
       updatedAt: new Date()
     };
 
-    const indent = await this.materialIndentRepository.updateWithItems(parseInt(id, 10), indentData, items);
+    const indent = await this.materialIndentRepository.updateWithItems(parseInt(id as string, 10), indentData, items);
     if (!indent) {
         res.status(404).json({ success: false, message: 'Material Indent not found' });
         return;
@@ -50,7 +50,7 @@ export class MaterialIndentController {
 
   deleteMaterialIndent = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
-    const indent = await this.materialIndentRepository.delete(parseInt(id, 10));
+    const indent = await this.materialIndentRepository.delete(parseInt(id as string, 10));
     if (!indent) {
         res.status(404).json({ success: false, message: 'Material Indent not found' });
         return;

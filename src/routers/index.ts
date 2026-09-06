@@ -31,6 +31,10 @@ import { applicantRouter } from './hr/applicant.router.js';
 import { leaveRouter } from './hr/leave.router.js';
 import { complianceRouter } from './hr/compliance.router.js';
 import equipmentRouter from './operation/equipment.router.js';
+import { chartOfAccountsRouter } from './finance/chart-of-accounts.router.js';
+import { bankAccountRouter } from './finance/bank-account.router.js';
+import { invoiceRouter } from './finance/invoice.router.js';
+import { voucherRouter } from './finance/voucher.router.js';
 
 const router = Router();
 
@@ -66,5 +70,9 @@ router.use('/job-posts', jobPostRouter);
 router.use('/applicants', applicantRouter);
 router.use('/compliance', complianceRouter);
 router.use('/equipments', equipmentRouter);
+router.use('/finance/chart-of-accounts', chartOfAccountsRouter);
+router.use('/finance/bank-accounts', bankAccountRouter);
+router.use('/finance/invoices', invoiceRouter);
+router.use('/finance/vouchers', voucherRouter);
 
 export { router as apiRouter };

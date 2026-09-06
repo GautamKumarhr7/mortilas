@@ -29,3 +29,7 @@ export * from './operation/grn.model.js';
 export * from './operation/grn-item.model.js';
 export * from './operation/equipment.model.js';
 export * from './operation/po-bid.model.js';
+export * from './finance/chart-of-accounts.model.js';
+export * from './finance/bank-account.model.js';
+export * from './finance/invoice.model.js';
+export * from './finance/voucher.model.js';
